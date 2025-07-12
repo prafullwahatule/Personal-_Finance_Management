@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Personal Finance Mnagement/Sign Up</title>
+  <link rel="stylesheet" href="{% static 'css/sign_up.css' %}" />
+
+</head>
+<body style="background-image: url('{% static 'images/bg-3.jpg' %}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+  <div class="container">
+    <div class="sign_up-section">
+      <h2>Create Account</h2>
+      {% if messages %}
+        <div id="message-container">
+          {% for message in messages %}
+            <div 
+              class="alert alert-{{ message.tags }}" 
+              style="
+                padding: 10px;
+                margin-bottom: 10px;
+                margin-bottom: 10px;
+                background-color: {% if message.tags == 'success' %}#d4edda{% elif message.tags == 'error' %}#f8d7da{% else %}#d1ecf1{% endif %};
+                color: {% if message.tags == 'success' %}#155724{% elif message.tags == 'error' %}#721c24{% else %}#0c5460{% endif %};
+                border: 1px solid {% if message.tags == 'success' %}#28a745{% elif message.tags == 'error' %}#dc3545{% else %}#17a2b8{% endif %};
+                border-radius: 5px;
+              "
+            >
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      
+            
+      
+      
+      <form id="sign_upForm" method="POST" action="{% url 'sign_up' %}">
+        {% csrf_token %}
+        
+        <h5>Personal Details</h5>
+        <div class="form-row">
+          <div class="form-col">
+            <label for="full_name" class="form-label">Full Name</label>
+            <input id="full_name" type="text" class="form-control" name="full_name" required />
+          </div>
+          <div class="form-col">
+            <label for="email" class="form-label">Email</label>
+            <input id="email" type="email" class="form-control" name="email" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-col password-wrapper">
+            <label for="password" class="form-label">Password</label>
+            <input id="password" type="password" class="form-control" name="password" required />
+            <span class="toggle-password" onclick="togglePassword('password')" aria-label="Toggle password visibility" role="button" tabindex="0">👁️</span>
+          </div>
+          <div class="form-col">
+            <label for="mobile" class="form-label">Mobile Number</label>
+            <input id="mobile" type="tel" pattern="[0-9]{10}" title="Enter 10 digit mobile number" class="form-control" name="mobile" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-col">
+            <label for="dob" class="form-label">Date of Birth</label>
+            <input id="dob" type="date" class="form-control" name="dob" required />
+          </div>
+          <div class="form-col">
+            <label for="gender" class="form-label">Gender</label>
+            <select id="gender" class="form-control" name="gender" required>
+              <option value="" disabled selected>Select</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+        </div>
+
+        <h5>Financial Details</h5>
+        <div class="form-row">
+          <div class="form-col">
+            <label for="savings" class="form-label">Savings Per Month</label>
+            <input id="savings" type="number" min="0" step="0.01" class="form-control" name="savings" required />
+          </div>
+          <div class="form-col">
+            <label for="existing_investments" class="form-label">Existing Investments</label>
+            <input id="existing_investments" type="text" class="form-control" name="existing_investments" />
+          </div>
+        </div>
+
+        <h5>Investment Preferences</h5>
+        <div class="form-row">
+          <div class="form-col">
+            <label for="risk_appetite" class="form-label">Risk Appetite</label>
+            <select id="risk_appetite" class="form-control" name="risk_appetite" required>
+              <option value="" disabled selected>Select</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+          <div class="form-col">
+            <label for="investment_goals" class="form-label">Investment Goals</label>
+            <select id="investment_goals" class="form-control" name="investment_goals" required>
+              <option value="" disabled selected>Select</option>
+              <option value="Short Term">Short Term</option>
+              <option value="Long Term">Long Term</option>
+              <option value="Retirement">Retirement</option>
+              <option value="Wealth Growth">Wealth Growth</option>
+              <option value="Tax Saving">Tax Saving</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="sign_up-btn">Sign Up</button>
+        <p class="login-text">
+          Already have an account? <a href="{% url 'login' %}">Sign In</a>
+        </p>
+      </form>
+    </div>
+
+    <div class="info-section">
+      <div class="slider">
+        <img src="{% static 'images/img1.jpg' %}" class="slide active" alt="Financial Growth 1" />
+        <img src="{% static 'images/img2.jpg' %}" class="slide" alt="Financial Growth 2" />
+        <img src="{% static 'images/img3.jpg' %}" class="slide" alt="Financial Growth 3" />
+      </div>
+      <h3 id="slide-title">Join Us & Grow Financially</h3>
+      <p id="slide-desc">Start your journey towards better financial management with us.</p>
+      <div class="dots">
+        <span class="dot active" onclick="showSlide(0)" role="button" tabindex="0" aria-label="Slide 1"></span>
+        <span class="dot" onclick="showSlide(1)" role="button" tabindex="0" aria-label="Slide 2"></span>
+        <span class="dot" onclick="showSlide(2)" role="button" tabindex="0" aria-label="Slide 3"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+      // Toggle password visibility
+      function togglePassword(id) {
+        const input = document.getElementById(id);
+        if (input.type === "password") {
+          input.type = "text";
+        } else {
+          input.type = "password";
+        }
+      }
+    
+      // Auto-redirect and message hide after 10 seconds
+      setTimeout(function () {
+        // Hide messages
+        const messageContainer = document.getElementById('message-container');
+        if (messageContainer) {
+          messageContainer.style.display = 'none';
+        }
+    
+        // Redirect to login if successful
+        {% if redirect_to_login %}
+          window.location.href = "{% url 'login' %}";
+        {% endif %}
+      }, 10000); // 10 seconds
+    </script>
+
+
+  <script src="{% static 'js/sign_up.js' %}"></script>
+</body>
+</html>

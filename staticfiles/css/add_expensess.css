@@ -1,0 +1,240 @@
+/* ===== FLEX CONTAINER ===== */
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 20px;
+  padding: 24px;
+  background-color: #1a2634;
+  border: 2px solid #66767e;
+  font-family: 'Segoe UI', sans-serif;
+  border-radius: 12px;
+}
+
+/* ===== HEADINGS ===== */
+.h2-main-heading,
+.h2-manage-expense {
+  width: 100%;
+  text-align: center;
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.h2-main-heading {
+  font-size: 2rem;
+}
+
+.h2-manage-expense {
+  font-size: 1.5rem;
+}
+
+/* ===== EXPENSE SUMMARY TABLE CONTAINER ===== */
+.expense-summary {
+  flex: 1 1 580px;
+  min-width: 320px;
+  background-color: #1c1f24;
+  border: 2px solid #66767e;
+  padding: 20px;
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+/* ===== TABLE STYLING ===== */
+.expense-summary table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  color: #ffffff;
+  min-width: 500px;
+}
+
+.expense-summary th,
+.expense-summary td {
+  padding: 12px;
+  text-align: left;
+  border: 2px solid #66767e;
+}
+
+.expense-summary th {
+  background-color: #2c313a;
+  font-weight: 600;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+.expense-summary .expense-table-footer {
+  background-color: #2c313a !important;
+  font-weight: bold;
+  text-align: right;
+}
+.expense-summary tr:hover td {
+  background-color: #2c313a;
+  cursor: pointer;
+  color: #0ea5e9;
+}
+
+
+/* ===== EXPENSE FORM CONTAINER ===== */
+.expense-form-container {
+  flex: 1 1 10;
+  min-width: 320px;
+  background-color: #1c1f24;
+  border: 2px solid #66767e;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.expense-form-container:focus-within {
+  border-color: #bd2130;
+  box-shadow: 0 0 4px 0px #bd2130;
+}
+
+/* ===== FORM GROUPS ===== */
+.form-group {
+  margin-bottom: 12px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.expense-form-container input[type="number"],
+.expense-form-container input[type="text"],
+.expense-form-container input[type="date"],
+.expense-form-container select,
+.expense-form-container textarea {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: #1a2634;
+  border: 2px solid #66767e;
+  border-radius: 6px;
+  font-size: 15px;
+  color: #ffffff;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.expense-form-container input:focus-within {
+  border-color: #bd2130;
+  box-shadow: 0 0 4px 0px #bd2130;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #bd2130;
+  box-shadow: 0 0 4px 0px #bd2130;
+  outline: none;
+}
+
+textarea {
+  height: 60px;
+  resize: vertical;
+}
+
+/* ===== SUBMIT BUTTON ===== */
+.submit-btn {
+  background-color: #10b981;
+  color: #ffffff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #bd2130;
+  box-shadow: 0 0 4px 0px #bd2130;
+}
+
+/* ===== ERROR MESSAGES ===== */
+.error {
+  color: #dc2626;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+/* ===== BACK LINK ===== */
+.back-link {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #60a5fa;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.back-link a::before {
+  content: '←';
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.back-link a:hover {
+  color: #3b82f6;
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.back-link a:hover::before {
+  transform: translateX(-4px);
+}
+
+/* ===== RESPONSIVE STYLES ===== */
+@media (max-width: 900px) {
+  .flex-container {
+    flex-direction: column;
+    padding: 16px;
+    gap: 20px;
+  }
+
+  .expense-summary,
+  .expense-form-container {
+    flex: 1 1 100%;
+    min-width: 100%;
+  }
+
+  .expense-summary table {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .h2-main-heading {
+    font-size: 1.5rem;
+  }
+
+  .h2-manage-expense {
+    font-size: 1.2rem;
+  }
+
+  .submit-btn {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  input[type="number"],
+  input[type="text"],
+  input[type="date"],
+  select,
+  textarea {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+}

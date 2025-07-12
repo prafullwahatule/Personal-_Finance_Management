@@ -1,0 +1,278 @@
+
+html {
+  scroll-behavior: smooth;
+}
+/* Navbar Styling */
+
+.navbar .navbar-brand {
+color: #FFD700 !important; /* Gold color */
+font-size: 1.4rem; /* Slightly larger font */
+font-weight: bold; /* Bold font */
+text-transform: uppercase; /* Uppercase letters */
+}
+
+
+.navbar {
+  background-color:rgba(113, 113, 113, 0.86);
+}
+
+/* Navbar Links */
+.navbar .nav-link {
+  color: #ffffff !important; /* White text */
+  font-weight: 500;
+  transition: color 0.3s ease-in-out;
+}
+
+.navbar .nav-link:hover {
+  color: #FFD700 !important; /* Gold on hover */
+}
+
+/* Sign Up Button */
+.navbar .btn-primary {
+  background-color: #FFD700; /* Gold */
+  border: none;
+  color: #004d00; /* Deep Green Text */
+  font-weight: bold;
+}
+
+.navbar .btn-primary:hover {
+  background-color: #ccac00; /* Darker Gold */
+}
+
+
+
+.hero {
+  margin-top: 3px; /* Adjust for fixed navbar */
+  position: relative;
+  height: 95vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  z-index: -1;
+}
+
+.hero-img.active {
+  opacity: 1;
+  z-index: 0;
+
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  font-size: 2rem;
+  color: white;
+  background-color: rgba(29, 29, 29, 0.5);
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 2;
+  transform: translateY(-50%);
+}
+
+.left-arrow {
+  left: 10px;
+}
+
+.right-arrow {
+  right: 10px;
+}
+
+h1 {
+  position: relative;
+  z-index: 1;
+  color: white;
+  background-color: #33333368;
+  height: 100%;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+
+}
+.display-4{
+  font-size: 5rem;
+  color: white;
+  padding: 20px;
+}
+
+
+
+
+
+
+/* Animations */
+.animate-fade-in {
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 1.5s ease-in-out;
+}
+
+.animate-bounce {
+  animation: bounce 1.5s infinite;
+}
+
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes slideUp {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+  
+.feature-box {
+    transition: transform 0.3s;
+}
+.feature-box:hover {
+    transform: scale(1.05);
+}
+.feature-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+.footer-links a:hover {
+    text-decoration: underline;
+}
+.social-icons a {
+    color: white;
+    font-size: 24px;
+    margin: 0 10px;
+}
+.social-icons a:hover {
+    color: #f8c146;
+}
+  
+body {
+    padding-top: 56px;
+}
+.feature-img {
+  width: 300px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px; /* Optional rounded corners */
+}
+.blogs-section {
+  background: #f8f9fa; /* Light background for better readability */
+}
+.card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.social-icons a {
+font-size: 28px;
+  color: #333;
+  transition: color 0.3s ease-in-out;
+}
+.social-icons a:hover {
+    color: #f8c146;
+}
+.card {
+    border-radius: 10px;
+}
+.map-container iframe {
+    border-radius: 10px;
+}
+
+.vision-section {
+  background: linear-gradient(to right, #f8f9fa, #e9ecef);
+}
+.vision-img {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.card {
+  border-radius: 10px;
+}
+.map-container iframe {
+  border-radius: 10px;
+}
+
+.social-icons a {
+font-size: 24px;
+color: #333;
+transition: color 0.3s ease-in-out;
+}
+
+.social-icons a:hover {
+color: #f8c146;
+}
+
+
+
+.blog-card {
+border-radius: 10px;
+overflow: hidden;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-card:hover {
+transform: translateY(-8px);
+box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.blog-card img {
+height: 200px;
+object-fit: cover;
+}
+
+.importance-finance {
+background: #f4f4f4; /* Light Gray Background */
+padding: 80px 30px;
+}
+
+.finance-box {
+background: rgba(113, 113, 113, 0.86);
+padding: 50px;
+border-radius: 12px;
+box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.finance-card {
+background: rgba(255, 255, 255, 0.1);
+border-radius: 8px;
+transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.finance-card:hover {
+transform: translateY(-5px);
+background: rgba(255, 255, 255, 0.2);
+}
+
+.finance-icon {
+width: 60px;
+height: 60px;
+}
+
+
+

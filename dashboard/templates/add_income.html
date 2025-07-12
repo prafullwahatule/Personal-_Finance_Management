@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Personal Finance Management - Add Income{% endblock %}
+{% block header %}Income Tracker{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/add_incomesss.css' %}">
+
+<div class="flex-container">
+  <div id="income-message" class="add-income-message" style="display:none; margin-bottom:10px;"></div>
+  <h2 class="h2-main-heading">Income Management</h2>
+
+  <!-- LEFT SIDE: Income Summary -->
+  <div class="income-summary">
+    <h2 class="h2-manage-income">Source-wise Income</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th>Last 30 Days (₹)</th>
+          <th>Total Income (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for source, values in category_income.items %}
+          <tr>
+            <td>{{ source }}</td>
+            <td>{{ values.recent }}</td>
+            <td>{{ values.total }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="3">No income records found</td>
+          </tr>
+        {% endfor %}
+        {% if category_income %}
+          <tr class="add-income-table-footer">
+            <td>Total</td>
+            <td>{{ total_recent_sum }}</td>
+            <td>{{ total_income_sum }}</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RIGHT SIDE: Add Income Form -->
+  <div class="income-form-container">
+    <h2 class="h2-manage-income">Add New Income</h2>
+    <form id="income-form" action="{% url 'add_income' %}" method="post">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="{{ form.amount.id_for_label }}">{{ form.amount.label }}</label>
+        {{ form.amount|add_class:"form-control" }}
+        {% if form.amount.errors %}
+          <div class="error">{{ form.amount.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.source.id_for_label }}">{{ form.source.label }}</label>
+        {{ form.source|add_class:"form-control" }}
+        {% if form.source.errors %}
+          <div class="error">{{ form.source.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.date.id_for_label }}">{{ form.date.label }}</label>
+        {{ form.date|add_class:"form-control" }}
+        {% if form.date.errors %}
+          <div class="error">{{ form.date.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group dsc">
+        <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+        {{ form.description|add_class:"form-control" }}
+        {% if form.description.errors %}
+          <div class="error">{{ form.description.errors }}</div>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <span class="btn-text">Add Income</span>
+      </button>
+    </form>
+
+    <div class="back-link" style="margin-top: 15px;">
+      <a href="{% url 'income_tracker' %}">← Back to Income List</a>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/add_incomee.js' %}"></script>
+{% endblock %}

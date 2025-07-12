@@ -1,0 +1,283 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block title %}Personal Finance Management - income tracker{% endblock %} 
+{% block header %}Income Tracker{% endblock %} 
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/income_tracker.css' %}" />
+
+
+
+<div class="income-container">
+  <div id="income-message" class="income-alert" style="display:none; margin-bottom:10px;"></div>
+  <div class="chart-container">
+    <div class="chart-box">
+        <h3>📈 Monthly Income Trend</h3>
+        <canvas id="lineChart"
+                data-labels="{{ months|safe }}"
+                data-data="{{ monthly_totals|safe }}"></canvas>
+    </div>
+
+    <div class="chart-box small-chart">
+        <h3>🥧 Source-wise Income Distribution</h3>
+        <div class="pie-chart-container">
+            <canvas id="pieChart"
+                    data-labels="{{ sources|safe }}"
+                    data-data="{{ source_totals|safe }}"></canvas>
+            <div id="sourceLabels" class="source-labels">
+                <!-- Labels will be inserted here dynamically -->
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Filter Section -->
+  <!-- Filters + Buttons for Income -->
+  <div class="filter-section-container">
+    <form method="get" action="{% url 'income_tracker' %}" class="filter-section">
+      <div class="filter-controls">
+        <label for="source-filter">
+          <i class="fas fa-filter" style="margin-right: 6px; color: #4CAF50;"></i> Filter
+        </label>
+        <select name="source" id="source-filter" onchange="this.form.submit()">
+          <option value="">All</option>
+          <option value="Salary" {% if source_filter == 'Salary' %}selected{% endif %}>Salary</option>
+          <option value="Gift" {% if source_filter == 'Gift' %}selected{% endif %}>Gift</option>
+          <option value="Investment" {% if source_filter == 'Investment' %}selected{% endif %}>Investment</option>
+          <option value="Freelance" {% if source_filter == 'Freelance' %}selected{% endif %}>Freelance</option>
+          <option value="Business" {% if source_filter == 'Business' %}selected{% endif %}>Business</option>
+          <option value="Other" {% if source_filter == 'Other' %}selected{% endif %}>Other</option>
+        </select>
+  
+        <label for="filter-date">Date:</label>
+        <input type="date" name="date" id="filter-date" value="{{ date_filter }}" onchange="this.form.submit()">
+      </div>
+  
+      <div class="add-button-container">
+        <a href="{% url 'add_income' %}" class="add-btn">➕ Add Income</a>
+      </div>
+    </form>
+  </div>
+
+
+  <!-- Expense Table -->
+  <!-- Income Table -->
+  <div class="income-table-section">
+    <table class="income-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Source</th>
+          <th>Amount (₹)</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="income-table-body">
+        {% for i in incomes %}
+          <tr id="income-row-{{ i.id }}">
+            <td>{{ i.date }}</td>
+            <td>{{ i.time }}</td>
+            <td>{{ i.source }}</td>
+            <td>₹{{ i.amount }}</td>
+            <td>{{ i.description|default:"-" }}</td>
+            <td>
+              <a href="#" class="delete-icon delete-income" data-id="{{ i.id }}" data-amount="{{ i.amount }}">
+                  <i class="fas fa-trash-alt"></i>
+              </a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr id="no-income-row">
+            <td colspan="6">No incomes yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5"><strong>Total Income</strong></td>
+          <td id="total-income">₹{{ total_incomes }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+
+  <!-- Download Form -->
+  <!-- Download Income Report Form -->
+  <div class="download-section">
+    <form method="get" action="{% url 'download_income' %}" class="download-form">
+      <label for="income-start-date">From:</label>
+      <input type="date" name="start_date" id="income-start-date" required>
+  
+      <label for="income-end-date">To:</label>
+      <input type="date" name="end_date" id="income-end-date" required>
+  
+      <label for="income-format">Format:</label>
+      <select name="format" id="income-format" required>
+        <option value="csv">CSV</option>
+        <option value="excel">Excel</option>
+      </select>
+  
+      <button type="submit" class="download-btn">
+        <i class="fas fa-download"></i> Download
+      </button>
+    </form>
+  </div>
+
+</div>
+
+
+<!-- Script for Modal and Chart Handling -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/income_tracker.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+<script>
+  const normalize = str => (str && typeof str === 'string') ? str.trim().toLowerCase() : '';
+
+  // Variables from Django context
+  const sourceFilter = "{{ source_filter }}";
+  const sources = {{ sources|safe }};
+  const sourceTotals = {{ source_totals|safe }};
+  const months = {{ months|safe }};
+  const monthlyTotals = {{ monthly_totals|safe }};
+
+  // Custom color palette for sources (teal/navy/dark)
+  const incomeColorMap = {
+    'salary': '#009688',       // Teal
+    'gift': '#3f72af',         // Muted Blue
+    'freelance': '#2c7a7b',    // Blue-Green
+    'investments': '#6b7280',  // Slate Gray
+    'business': '#00695c',     // Deep Teal
+    'rental': '#94a3b8',       // Soft Blue-Gray
+    'other': '#5c677d'         // Muted Grayish Blue
+  }
+
+
+  const incomeColors = sources.map(source => incomeColorMap[normalize(source)] || '#999999'); // Default: Gray-300 
+
+  let incomeLabel = 'Monthly Income';
+  if (sourceFilter) {
+    incomeLabel += ` (Source: ${sourceFilter})`;
+  }
+
+  // Line Chart for Income Trend
+  // Line Chart for Income Trend (Updated Colors)
+  const lineCtx = document.getElementById('lineChart').getContext('2d');
+  const lineChart = new Chart(lineCtx, {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [{
+        label: incomeLabel,
+        data: monthlyTotals,
+        backgroundColor: 'rgba(110, 231, 183, 0.3)', // Mint Green soft fill
+        borderColor: '#6EE7B7',                      // Mint Green border
+        borderWidth: 3,
+        tension: 0.3,
+        fill: true,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        pointBackgroundColor: '#34D399',             // Light Emerald for points
+        cubicInterpolationMode: 'monotone'
+      }]
+    },
+    options: {
+      responsive: true,
+      interaction: {
+        mode: 'nearest',
+        intersect: false
+      },
+      plugins: {
+        legend: {
+          labels: {
+            color: '#e0e7ff',
+            font: { size: 14, weight: 'bold' }
+          }
+        },
+        tooltip: {
+          enabled: true,
+          backgroundColor: '#1e293b',
+          titleColor: '#6EE7B7',        // Mint for tooltip title
+          bodyColor: '#f3f4f6',
+          cornerRadius: 6,
+          padding: 10,
+          displayColors: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: { color: '#374151' },
+          ticks: { color: '#cbd5e1' }
+        },
+        x: {
+          grid: { color: '#374151' },
+          ticks: { color: '#cbd5e1' }
+        }
+      }
+    }
+  });
+  
+
+  // Pie Chart for Source-wise Income Distribution
+  const pieCtx = document.getElementById('pieChart').getContext('2d');
+  const pieChart = new Chart(pieCtx, {
+    type: 'pie',
+    data: {
+      labels: sources,
+      datasets: [{
+        label: sourceFilter ? `Source Breakdown (${sourceFilter})` : 'Source Breakdown',
+        data: sourceTotals,
+        backgroundColor: incomeColors,
+        borderColor: '#1f2937',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            color: '#f3f4f6',
+            font: { size: 12 }
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const total = ctx.dataset.data.reduce((a, v) => a + v, 0);
+              const percent = ((ctx.raw / total) * 100).toFixed(1);
+              return `${ctx.label}: ₹${ctx.raw} (${percent}%)`;
+            }
+          },
+          backgroundColor: '#1e293b',
+          titleColor: '#00bfa6',
+          bodyColor: '#f3f4f6',
+          cornerRadius: 6,
+          padding: 8
+        },
+        datalabels: {
+          display: true,
+          color: '#f3f4f6',
+          font: { weight: 'bold', size: 10 },
+          formatter: (value, ctx) => {
+            const total = ctx.dataset.data.reduce((acc, val) => acc + val, 0);
+            const percent = ((value / total) * 100).toFixed(1);
+            return `${percent}%`;
+          },
+          anchor: 'center',
+          align: 'center',
+          offset: 0
+        }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+</script>
+
+
+
+{% endblock%}

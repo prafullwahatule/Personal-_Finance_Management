@@ -1,0 +1,589 @@
+/* General Styling */
+.income-container {
+  margin-top: 20px;
+  padding: 30px;
+  background-color: #1a2634;
+  border: 1px solid #66767e;
+  font-family: 'Segoe UI', sans-serif;
+  border-radius: 12px;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.header-row h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #343a40; /* Darker grey for text */
+}
+
+
+
+
+
+/* Chart Section */
+.chart-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.chart-box {
+  flex: 1 1 48%;
+  background-color: #1c1f24;
+  border: 1px solid #66767e;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.chart-box h3 {
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 1.5rem !important;
+  color: #ffffff;
+}
+
+.chart-box canvas {
+  width: 100% !important;
+  height: 90% !important;
+}
+
+/* 🔹 Specific size tweak for pie chart */
+.chart-box.small-chart canvas {
+  max-width: 350px;
+  max-height: 350px;
+  margin: 0 auto;
+}
+
+/* For Pie Chart, we add the container for the labels */
+.pie-chart-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category-labels {
+  max-width: 200px;
+  margin-left: 20px;
+}
+
+.category-labels span {
+  display: block;
+  font-size: 14px;
+  color: #ec0808;
+  margin-bottom: 5px;
+}
+
+
+
+
+
+/* Filter Section */
+
+
+/* === Filter & Action Section === */
+.filter-section-container {
+  margin-top: 20px;
+  background-color: #1c1f24;
+  border: 1px solid #66767e;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.filter-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px 0;
+}
+
+.filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.filter-controls label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+
+.filter-controls select,
+.filter-controls input[type="date"] {
+  padding: 6px 10px;
+  font-size: 14px;
+  color: white;
+  border-radius: 6px;
+  background-color: #1a2634;
+  border: 1px solid #66767e;
+  transition: border-color 0.3s ease;
+  margin-right: 5px;
+}
+
+.filter-controls select:focus,
+.filter-controls input[type="date"]:focus {
+  outline: none;
+  border-color: #000000;
+}
+
+
+
+/* === Buttons === */
+.add-button-container a {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+}
+
+.add-btn {
+  background-color: #2563eb;
+  color: #fff;
+}
+
+.add-btn:hover {
+  background-color: #1e40af;
+}
+
+.limit-btn {
+  background-color: #6b7280;
+  color: #fff;
+}
+
+.limit-btn:hover {
+  background-color: #4b5563;
+}
+
+
+
+
+/* === Income Table === */
+.income-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.income-table th,
+.income-table td {
+  padding: 15px;
+  text-align: left;
+  border: 1px solid #007bff;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.income-table th {
+  background-color: #2c313a;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.income-table td {
+  background-color: #1c1f24;
+  color: #cecece;
+}
+
+.income-table tr:hover td {
+  background-color: #2c313a;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.income-table tfoot td {
+  background-color: #2c313a;
+  font-weight: bold;
+  text-align: right;
+}
+
+/* Reuse the same delete icon style */
+.delete-icon {
+  cursor: pointer;
+  font-size: 15px;
+  color: #ffffff;
+}
+
+.delete-icon:hover {
+  transform: scale(1.1);
+  color: red;
+}
+
+
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #555;
+  font-size: 15px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #4caf50;
+  background-color: #fff;
+}
+
+/* Submit Button */
+.submit-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #45a049;
+}
+
+
+
+
+/* === Download Section (for both income & expense) === */
+.download-section {
+  width: auto;
+  max-width: fit-content;
+  margin-top: 20px;
+  background-color: #1c1f24;
+  border: 1px solid #66767e;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.download-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 15px;
+}
+
+.download-form label {
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.download-form input[type="date"],
+.download-form select {
+  padding: 8px 10px;
+  font-size: 14px;
+  background-color: #1a2634;
+  border: 1px solid #66767e;
+  border-radius: 6px;
+  color: white;
+}
+
+.download-btn {
+  background-color: #10b981;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+  background-color: #047857;
+}
+
+
+
+
+/* Alert Toast Messages */
+.message-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  max-width: 300px;
+}
+
+.alert {
+  padding: 12px 18px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  animation: fadeSlide 0.5s ease-in-out;
+}
+
+.alert.success {
+  background-color: #4CAF50;
+}
+
+.alert.error {
+  background-color: #f44336;
+}
+
+.alert.info {
+  background-color: #2196F3;
+}
+
+
+
+
+
+
+
+/* === Responsive Layout === */
+@media screen and (max-width: 1024px) {
+  .chart-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .chart-box {
+    flex: 1 1 100%;
+  }
+
+  .filter-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .filter-controls {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .pie-chart-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .category-labels {
+    margin-left: 0;
+    max-width: 100%;
+  }
+
+  .download-form {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .add-button-container a {
+    margin-bottom: 10px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .chart-box.small-chart canvas {
+    max-width: 100%;
+    max-height: 300px;
+  }
+
+  .income-table th,
+  .income-table td {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .download-btn,
+  .add-btn,
+  .limit-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .download-section,
+  .filter-section-container {
+    width: 100%;
+  }
+
+  .category-labels span {
+    font-size: 13px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .income-container {
+    padding: 15px;
+  }
+
+  .chart-box {
+    padding: 15px;
+  }
+
+  .chart-box h3 {
+    font-size: 1.2rem !important;
+  }
+
+  .download-form label,
+  .filter-controls label {
+    font-size: 13px;
+  }
+
+  .filter-controls select,
+  .filter-controls input[type="date"],
+  .download-form input[type="date"],
+  .download-form select {
+    width: 100%;
+  }
+
+  .add-button-container a {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+/* === Responsive Income Tables === */
+@media screen and (max-width: 768px) {
+  .income-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: none;
+  }
+
+  .income-table thead,
+  .income-table tbody,
+  .income-table th,
+  .income-table td,
+  .income-table tr {
+    display: block;
+  }
+
+  .income-table thead {
+    display: none;
+  }
+
+  .income-table tr {
+    margin-bottom: 15px;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background-color: #2a2a2a;
+    padding: 10px;
+  }
+
+  .income-table td {
+    text-align: left;
+    padding: 10px;
+    font-size: 14px;
+    position: relative;
+    padding-left: 10%;
+  }
+
+  .income-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 15px;
+    width: 45%;
+    white-space: nowrap;
+    font-weight: bold;
+    color: #10b981;
+  }
+
+  .income-table tfoot {
+    display: none;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.income-alert {
+  position: fixed;
+  top: 110px;
+  right: 20px;
+  z-index: 9999;
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  width: auto;
+  max-width: 90vw;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  word-wrap: break-word;
+}
+
+.income-alert-success {
+  background: linear-gradient(135deg, #a8e6a2, #7ccf7a);
+  color: #155724;
+  border: 1px solid #b6e2b5;
+}
+
+.income-alert-danger {
+  background: linear-gradient(135deg, #f8d7da, #f1b0b7);
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+  .income-alert {
+    right: 10px;
+    left: 10px;
+    top: 80px;
+    padding: 12px 16px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+}
+

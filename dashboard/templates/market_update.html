@@ -1,0 +1,855 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Personal Finance Management - market updates{% endblock %}
+{% block header %}Market Updates{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/market_update.css' %}" />
+
+<div class="market-section">
+    <h2>📊 Live Market Indices</h2>
+
+    <div class="market-flex-wrapper">
+        <!-- Market Data -->
+        <div id="market-data" class="market-grid">
+            <div class="market-loader"></div> <!-- Loader -->
+        </div>
+
+        <!-- Chart Section -->
+        <div id="chart-container">
+            <canvas id="indexChart"></canvas>
+            <div class="market-loader"></div> <!-- Loader -->
+
+            <!-- Period Buttons (Horizontal Line) -->
+            <div class="period-buttons">
+                <button class="period-btn" data-period="1d">1D</button>
+                <button class="period-btn" data-period="1wk">1W</button>
+                <button class="period-btn" data-period="1mo">1M</button>
+                <button class="period-btn" data-period="3mo">3M</button>
+                <button class="period-btn" data-period="6mo">6M</button>
+                <button class="period-btn" data-period="1y">1Y</button>
+                <button class="period-btn" data-period="2y">2Y</button>
+                <button class="period-btn" data-period="5y">5Y</button>
+                <button class="period-btn" data-period="ytd">YTD</button>
+                <button class="period-btn" data-period="max">Max</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+  
+<div class="inv-market-section">
+    <h2>📊 Currency Commodities</h2>
+    <div id="inv-market-data" class="inv-market-grid">
+      <div class="currency-loader"></div> <!-- Center Loader shown initially -->
+    </div>
+</div>
+  
+
+
+
+<!-- ✅ stock_highlights.html -->
+<div id="stock-highlights" class="stock-section">
+    <h2>📊 Stock Highlights</h2>
+
+    <!-- Loader -->
+    <div id="loading-stock" class="currency-loader"></div>
+    <p id="stock-error-msg" class="error-msg"></p>
+
+
+    <!-- 📊 Tables Row Wrapper -->
+    <div class="stock-table-row">
+        
+        <!-- 🔥 Most Active Stocks -->
+        <div class="stock-table-container">
+            <div class="highlight-section" id="most-active" style="display: none;">
+                <h3>🔥 Most Active Stocks</h3>
+                <table class="stock-table">
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Price (₹)</th>
+                            <th>Volume</th>
+                        </tr>
+                    </thead>
+                    <tbody id="most-active-list"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 📈 52-Week High/Low -->
+        <div class="stock-table-container">
+            <div class="highlight-section" id="fifty-two-week" style="display: none;">
+                <h3>📈 52-Week High/Low</h3>
+                <table class="stock-table">
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Price (₹)</th>
+                            <th>High (₹)</th>
+                            <th>Low (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fifty-two-week-list"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 📡 Trending Stocks -->
+        <div class="stock-table-container">
+            <div class="highlight-section" id="trending" style="display: none;">
+                <h3>📡 Trending Stocks</h3>
+                <table class="stock-table">
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Price (₹)</th>
+                            <th>Change (%)</th>
+                            <th>Volume Spike (x)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trending-list"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <p id="last-updated" class="timestamp"></p>
+</div>
+
+
+
+  
+<div class="market-container">
+    <!-- Top 5 Stock Gainers Section -->
+    <div class="market-box gainers">
+        <h2>📈 Top 5 Stock Gainers</h2>
+        <ul id="gainers-list" class="market-list"></ul>
+    </div>
+
+    <!-- Top 5 Losers Section -->
+    <div class="market-box losers">
+        <h2>📉 Top 5 Stock Losers</h2>
+        <ul id="losers-list" class="market-list"></ul>
+    </div>
+</div>
+
+
+<div class="sip-market-container">
+    <!-- SIP Gainers Section -->
+    <div class="sip-market-section">
+        <h2>📈 Top 5 SIP Gainers</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Fund Name</th>
+                    <th>NAV</th>
+                    <th>Change %</th>
+                </tr>
+            </thead>
+            <tbody id="sip-gainers-table">
+                {% for fund in top_5_gainers %}
+                <tr>
+                    <td>{{ fund.fund_name }}</td>
+                    <td>{{ fund.nav }}</td>
+                    <td>{{ fund.change }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- SIP Losers Section -->
+    <div class="sip-market-section">
+        <h2>📉 Top 5 SIP Losers</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Fund Name</th>
+                    <th>NAV</th>
+                    <th>Change %</th>
+                </tr>
+            </thead>
+            <tbody id="sip-losers-table">
+                {% for fund in top_5_losers %}
+                <tr>
+                    <td>{{ fund.fund_name }}</td>
+                    <td>{{ fund.nav }}</td>
+                    <td>{{ fund.change }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!--economic-calendar-container-->
+<div class="calendar-news-wrapper">
+
+    <!-- 🟩 Left: Economic Calendar -->
+    <div class="economic-calendar-container">
+        <h2 class="economic-calendar-title">📊 Economic Calendar</h2>
+
+        <!-- ✅ Wrapping the table and button together -->
+        <div class="economic-calendar-content-wrapper">
+            <div class="economic-calendar-scroll-wrapper">
+                <table class="economic-calendar-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Event</th>
+                            <th>End Date</th>
+                            <th>Press Release</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-body"></tbody>
+                </table>
+                
+            </div>
+            <a href="{% url 'download_economic_report' %}" class="economic-calendar-download-btn">
+                📥 Download PDF
+            </a>
+        </div>
+    </div>
+
+    <div class="news-ticker-container">
+        <h2 class="news-title">🗞️ Finance News</h2>
+        <div class="news-list" id="finance-news-box">
+            <p>Loading finance news...</p>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div id="ipo-container" class="ipo-section-dark">
+    <h2 class="ipo-heading">📈 Upcoming IPOs</h2>
+    <button class="ipo-fetch-btn" onclick="fetchUpcomingIPOs()">Fetch IPOs</button>
+    
+    <!-- IPO list will appear here -->
+    <div id="ipo-list" class="ipo-list-wrapper">
+        <!-- JS will inject IPO cards here -->
+    </div>
+
+    <!-- Loader placed outside ipo-list -->
+    <div id="ipo-loader-wrapper" style="display: none; text-align: center; padding: 20px;">
+        <div class="currency-loader"></div>
+    </div>
+
+    <!-- Show More Button -->
+    <div id="show-more-wrapper" class="show-more-container">
+        <button id="show-more-btn"><span>Show More</span> 🔽</button>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/stock_highlights.js' %}"></script>
+<script>
+
+    let marketFirstLoad = true;
+    let chartInstance = null;
+    //let currentIndexShown = null;  // Track currently shown index
+    
+    // Fetch Market Index Data (for cards)
+    async function fetchMarketIndices() {
+        const marketDataContainer = document.getElementById("market-data");
+    
+        // Show loader on first load
+        if (marketFirstLoad) {
+            marketDataContainer.innerHTML = '<div class="market-loader"><div class="market-spinner"></div></div>';
+        }
+    
+        try {
+            const response = await fetch("{% url 'get_market_indices' %}");
+            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+    
+            const data = await response.json();
+            if (!data || Object.keys(data).length === 0) throw new Error("No data received.");
+    
+            // First Load → Generate Cards
+            if (marketFirstLoad) {
+                marketDataContainer.innerHTML = Object.keys(data).map(index => {
+                    let { price = "N/A", change = "--", percent = "--" } = data[index] || {};
+                    let isNegative = parseFloat(change) < 0;
+                    let arrow = isNegative ? "▼" : "▲";
+                    let color = isNegative ? "red" : "green";
+    
+                    return `
+                        <div class="market-card" id="card-${index}" onclick="showChart('${index}')">
+                            <h3>${index}</h3>
+                            <p class="market-price" id="price-${index}">₹${price}</p>
+                            <p class="market-change" id="change-${index}">
+                                <span style="color: ${color}; font-weight: bold;">
+                                    ${change} (${arrow} ${percent}%)
+                                </span>
+                            </p>
+                        </div>`;
+                }).join('');
+                marketFirstLoad = false;
+            } else {
+                // Update Card Values
+                Object.keys(data).forEach(index => {
+                    let { price = "N/A", change = "--", percent = "--" } = data[index] || {};
+                    let isNegative = parseFloat(change) < 0;
+                    let arrow = isNegative ? "▼" : "▲";
+                    let color = isNegative ? "red" : "green";
+    
+                    document.getElementById(`price-${index}`).innerText = `₹${price}`;
+                    document.getElementById(`change-${index}`).innerHTML = `
+                        <span style="color: ${color}; font-weight: bold;">
+                            ${change} (${arrow} ${percent}%)
+                        </span>`;
+                });
+            }
+    
+        } catch (error) {
+            marketDataContainer.innerHTML = "<p class='market-alert'>⚠ Error loading data. Please try again.</p>";
+            console.error("❌ Market API Fetch Error:", error);
+        }
+    }
+    
+    async function showChart(indexName) {
+        const chartContainer = document.getElementById("chart-container");
+    
+        // 🛑 Check if same index is clicked again — close chart
+        if (chartContainer.dataset.index === indexName) {
+            chartContainer.style.display = "none";
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null;
+            }
+            chartContainer.removeAttribute("data-index");
+            return;
+        }
+    
+        // Show loader
+        chartContainer.style.display = "block";
+        chartContainer.innerHTML = `<div class="market-loader"></div>`;
+    
+        try {
+            const defaultPeriod = "1d";
+            const data = await fetchChartData(indexName, defaultPeriod);
+            if (data.error || !data.dates || data.dates.length === 0) {
+                throw new Error(data.error || "No historical data available.");
+            }
+    
+            // Inject chart canvas + buttons
+            chartContainer.innerHTML = `
+                <canvas id="indexChart"></canvas>
+                <div class="period-buttons">
+                    <button class="period-btn active" data-period="1d">1D</button>
+                    <button class="period-btn" data-period="1wk">1W</button>
+                    <button class="period-btn" data-period="1mo">1M</button>
+                    <button class="period-btn" data-period="3mo">3M</button>
+                    <button class="period-btn" data-period="6mo">6M</button>
+                    <button class="period-btn" data-period="1y">1Y</button>
+                    <button class="period-btn" data-period="2y">2Y</button>
+                    <button class="period-btn" data-period="5y">5Y</button>
+                    <button class="period-btn" data-period="ytd">YTD</button>
+                    <button class="period-btn" data-period="max">Max</button>
+                </div>
+            `;
+    
+            // Set which index is currently open
+            chartContainer.dataset.index = indexName;
+    
+            const ctx = document.getElementById("indexChart").getContext("2d");
+            if (chartInstance) chartInstance.destroy();
+            chartInstance = drawChart(ctx, data, indexName, defaultPeriod);
+    
+            // Period button logic
+            document.querySelectorAll(".period-btn").forEach(btn => {
+                btn.addEventListener("click", async () => {
+                    const period = btn.dataset.period;
+                    document.querySelectorAll(".period-btn").forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+    
+                    const newData = await fetchChartData(indexName, period);
+                    if (!newData.error) {
+                        if (chartInstance) chartInstance.destroy();
+                        chartInstance = drawChart(ctx, newData, indexName, period);
+                    }
+                });
+            });
+    
+        } catch (error) {
+            console.error("❌ Chart Load Error:", error.message);
+            chartContainer.innerHTML = `<p class="market-alert">⚠ Error loading chart for ${indexName}.</p>`;
+        }
+    }
+    
+
+
+    // 🔄 Fetch historical chart data for a specific index and period
+    async function fetchChartData(indexName, period) {
+        try {
+            const response = await fetch(`/dashboard/get_index_chart/${encodeURIComponent(indexName)}/?period=${period}`);
+            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+            return await response.json();
+        } catch (error) {
+            console.error(`❌ Failed to fetch chart data for ${indexName} (${period}):`, error);
+            return { error: true };
+        }
+    }
+    
+    // 📈 Render a Chart.js line chart using fetched data
+    function drawChart(ctx, data, indexName, period) {
+        const labels = formatChartLabels(data.dates, period);
+    
+        const startPrice = data.prices[0];
+        const endPrice = data.prices[data.prices.length - 1];
+        const isUpward = endPrice >= startPrice;
+    
+        const borderColor = isUpward ? 'rgba(0, 200, 83, 1)' : 'rgba(255, 82, 82, 1)';  // green or red
+        const backgroundColor = ctx.createLinearGradient(0, 0, 0, 300);
+        backgroundColor.addColorStop(0, isUpward ? 'rgba(0, 200, 83, 0.3)' : 'rgba(255, 82, 82, 0.3)');
+        backgroundColor.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    
+        return new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: `${indexName} (${period.toUpperCase()})`,
+                    data: data.prices,
+                    fill: true,
+                    backgroundColor: backgroundColor,
+                    borderColor: borderColor,
+                    borderWidth: 2,
+                    tension: 0.4,
+                    pointRadius: 2,
+                    pointHoverRadius: 5,
+                    pointBackgroundColor: borderColor
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            maxTicksLimit: 10,
+                            color: "#ccc"
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            callback: value => `₹${value}`,
+                            color: "#ccc"
+                        },
+                        grid: {
+                            color: "rgba(200,200,200,0.1)"
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        usePointStyle: true,
+                        callbacks: {
+                            label: context => `₹${context.parsed.y}`
+                        },
+                        backgroundColor: '#333',
+                        titleColor: '#fff',
+                        bodyColor: '#fff'
+                    },
+                    legend: {
+                        labels: {
+                            color: '#fff',
+                            boxWidth: 12,
+                            font: {
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    
+    
+    // 📅 Format date labels on X-axis based on selected period
+    function formatChartLabels(dates, period) {
+        return dates.map(dateStr => {
+            const date = new Date(dateStr);
+            switch (period) {
+                case '1d':
+                    return date.toLocaleTimeString('en-IN', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,          // 24-hour format
+                        timeZone: 'Asia/Kolkata' // ensure IST
+                    }); // e.g. 09:15
+                case '1wk':
+                    return date.toLocaleDateString('en-IN', { weekday: 'short' });
+                case '1mo':
+                case '3mo':
+                case '6mo':
+                    return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+                case '1y':
+                case '2y':
+                case '5y':
+                    return date.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' });
+                case 'ytd':
+                case 'max':
+                    return date.toLocaleDateString('en-IN', { year: 'numeric' });
+                default:
+                    return date.toLocaleDateString(); // fallback
+            }
+        });
+    }
+    
+    
+    
+
+
+    let gainersLosersFirstLoad = true; // 🔁 Loader flag
+
+    async function fetchTopGainersLosers() {
+        const gainersList = document.getElementById("gainers-list");
+        const losersList = document.getElementById("losers-list");
+    
+        // 🟡 Show loader only on first load
+        if (gainersLosersFirstLoad) {
+            gainersList.innerHTML = '<div class="market-loader"><div class="market-spinner"></div></div>';
+            losersList.innerHTML = '<div class="market-loader"><div class="market-spinner"></div></div>';
+        }
+    
+        try {
+            const response = await fetch("{% url 'get_top_gainers_losers' %}");
+            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+    
+            const data = await response.json();
+            if (!data.top_gainers || !data.top_losers) throw new Error("Invalid data received.");
+    
+            // ✅ Loader off after first successful fetch
+            gainersLosersFirstLoad = false;
+    
+            gainersList.innerHTML = data.top_gainers.map(stock =>
+                `<li>${stock.symbol}: <span class="market-up">▲ ${stock.change}</span></li>`
+            ).join('');
+    
+            losersList.innerHTML = data.top_losers.map(stock =>
+                `<li>${stock.symbol}: <span class="market-down">▼ ${stock.change}</span></li>`
+            ).join('');
+    
+        } catch (error) {
+            gainersList.innerHTML = "<p class='market-alert'>⚠ Unable to load gainers.</p>";
+            losersList.innerHTML = "<p class='market-alert'>⚠ Unable to load losers.</p>";
+            console.error("❌ Error fetching gainers & losers:", error);
+        }
+    }
+    
+    // 🕐 Run on page load + every 1 min
+    document.addEventListener("DOMContentLoaded", () => {
+        fetchTopGainersLosers();                // First fetch
+        setInterval(fetchTopGainersLosers, 300000);  // Every 5 minutes
+    });
+    
+
+
+
+
+
+// Function to Fetch SIP Gainers & Losers
+async function fetchSIPData() {
+    try {
+        const response = await fetch("{% url 'market_update' %}"); // Backend se data fetch karenge
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+
+        const data = await response.text(); // HTML content fetch karenge
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(data, "text/html");
+
+        // Extract updated tables from fetched HTML
+        const newGainersTable = doc.getElementById("sip-gainers-table").innerHTML;
+        const newLosersTable = doc.getElementById("sip-losers-table").innerHTML;
+
+        // Update the existing tables in the page
+        document.getElementById("sip-gainers-table").innerHTML = newGainersTable;
+        document.getElementById("sip-losers-table").innerHTML = newLosersTable;
+
+        // Ensure Negative Values Appear Correctly
+        document.querySelectorAll("#sip-losers-table td:last-child").forEach(td => {
+            let value = parseFloat(td.innerText.replace('%', '').trim());
+            if (value > 0) td.innerText = `-${value}%`; // Make sure it's negative
+        });
+
+    } catch (error) {
+        console.error("❌ Error fetching SIP data:", error);
+    }
+}
+
+
+
+
+// 🟢 **Currency Commodities Fetching*
+
+let isCurrencyLoaded = false; // track karta hai ki first time hai ya nahi
+
+function fetchCurrencyCommodities() {
+  const container = document.getElementById("inv-market-data");
+
+  // Agar first time hai, loader dikhao
+  if (!isCurrencyLoaded) {
+    container.innerHTML = `<div class="currency-loader"></div>`;
+  }
+
+  fetch('/dashboard/market/get_currency_commodities/')
+    .then(response => response.json())
+    .then(data => {
+      // First time: Create all cards
+      if (!isCurrencyLoaded) {
+        container.innerHTML = `
+          <div class="inv-card" id="card-gold">Gold<br><span class="market-price" id="gold-price">-</span></div>
+          <div class="inv-card" id="card-silver">Silver<br><span class="market-price" id="silver-price">-</span></div>
+          <div class="inv-card" id="card-platinum">Platinum<br><span class="market-price" id="platinum-price">-</span></div>
+          <div class="inv-card" id="card-usd-inr">USD/INR<br><span class="market-price" id="usd-inr-price">-</span></div>
+          <div class="inv-card" id="card-eur-inr">EUR/INR<br><span class="market-price" id="eur-inr-price">-</span></div>
+        `;
+        isCurrencyLoaded = true;
+      }
+
+      // Ab sirf values update karo
+      updatePrice("gold-price", data.gold, data.gold_change);
+      updatePrice("silver-price", data.silver, data.silver_change);
+      updatePrice("platinum-price", data.platinum, data.platinum_change);
+      updatePrice("usd-inr-price", `₹${data.usd_inr}`, data.usd_inr_change);
+      updatePrice("eur-inr-price", `₹${data.eur_inr}`, data.eur_inr_change);
+    })
+    .catch(error => {
+      console.error("Commodity fetch failed:", error);
+      container.innerHTML = `<p style="color:red;text-align:center;">⚠ Failed to load data.</p>`;
+    });
+}
+
+function updatePrice(elementId, price, change) {
+  const el = document.getElementById(elementId);
+  if (el) {
+    el.innerHTML = `${price} <span class="${getColorClass(change)}">(${formatPercent(change)}%)</span>`;
+  }
+}
+
+function formatPercent(value) {
+  return parseFloat(value).toFixed(2);
+}
+
+function getColorClass(change) {
+  return parseFloat(change) >= 0 ? 'price-up' : 'price-down';
+}
+
+
+
+
+// 🟢 **Economic Calendar Data Fetching**
+document.addEventListener("DOMContentLoaded", function() {
+    let economicData = [];  // 🗄️ Full Economic Data Store Karne Ke Liye
+
+    function fetchEconomicEvents() {
+        console.log("📡 Fetching Economic Events...");
+
+        fetch("/dashboard/get-economic-events/")
+        .then(response => response.json())
+        .then(data => {
+            console.log("📊 API Response Data:", data);
+
+            let tbody = document.getElementById("data-body");
+            if (!tbody) {
+                console.error("❌ ERROR: #data-body ID not found in HTML!");
+                return;
+            }
+
+            tbody.innerHTML = "";  // 🔄 Purane data ko clear karo
+
+            // 🟢 **Random 5 Events Fetch Karo**
+            let randomEvents = data.random_events || [];
+
+            randomEvents.forEach(row => {
+                let tr = `<tr>
+                    <td>${row.date}</td>
+                    <td>${row.event}</td>
+                    <td>${row.end_date}</td>
+                    <td>${row.press_release ? "✅ Yes" : "❌ No"}</td>
+                    <td><a href="${row.link}" target="_blank">View</a></td>
+                </tr>`;
+                tbody.innerHTML += tr;
+            });
+
+            console.log("✅ Random 5 Economic Events Loaded Successfully!");
+        })
+        .catch(error => console.error("❌ Error fetching data:", error));
+    }
+
+    // 🟢 **PDF Download Function**
+    function downloadPDF() {
+        console.log("📥 Downloading PDF...");
+
+        fetch("/dashboard/download-economic-report/")
+        .then(response => {
+            if (!response.ok) throw new Error("PDF Download Failed");
+            return response.blob();
+        })
+        .then(blob => {
+            let url = window.URL.createObjectURL(blob);
+            let a = document.createElement("a");
+            a.href = url;
+            a.download = "economic_calendar_report.pdf";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            console.log("✅ PDF Downloaded Successfully!");
+        })
+        .catch(error => console.error("❌ PDF Download Error:", error));
+    }
+
+    // 🟢 **Page Load Pe Data Fetch Karo**
+    fetchEconomicEvents();
+
+    // 🔄 **Har 60 Second Me Data Refresh Karo**
+    setInterval(fetchEconomicEvents, 300000);  // Every 5 minutes
+
+
+    // 🟢 **Download Button Click Pe PDF Generate Karo**
+    document.querySelector(".economic-calendar-download-btn").addEventListener("click", downloadPDF);
+});
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    fetch('/dashboard/get_news_updates/')
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById("finance-news-box");
+            container.innerHTML = ""; // Clear loading text
+
+            if (data.news && data.news.length > 0) {
+                data.news.forEach(item => {
+                    const newsItem = document.createElement("div");
+                    newsItem.className = "news-box";
+                    newsItem.innerHTML = `
+                        <h4>📰 ${item.title}</h4>
+                        <p>${item.description}</p>
+                    `;
+                    container.appendChild(newsItem);
+                });
+            } else {
+                container.innerHTML = "<p>No finance news available right now.</p>";
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching news:", error);
+            document.getElementById("finance-news-box").innerHTML = "<p>Unable to load news at the moment.</p>";
+        });
+});
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    fetchUpcomingIPOs();
+});
+
+function fetchUpcomingIPOs() {
+    const ipoList = document.getElementById("ipo-list");
+    const showMoreBtn = document.getElementById("show-more-btn");
+    const loader = document.getElementById("ipo-loader-wrapper");
+
+    // Show loader & hide content
+    loader.style.display = "block";
+    ipoList.innerHTML = "";
+    showMoreBtn.style.display = "none";
+
+    fetch("/dashboard/upcoming-ipos/")
+        .then(res => {
+            if (!res.ok) throw new Error("Failed to fetch IPOs");
+            return res.json();
+        })
+        .then(data => {
+            loader.style.display = "none"; // Hide loader
+            ipoList.innerHTML = "";
+
+            const ipos = data.upcoming_ipos;
+            if (!ipos || ipos.length === 0) {
+                ipoList.innerHTML = `<p style="color: #999;">No upcoming IPOs found.</p>`;
+                return;
+            }
+
+            let showingAll = false;
+            const initialCount = 8;
+
+            displayIPOs(ipos.slice(0, initialCount));
+
+            if (ipos.length > initialCount) {
+                showMoreBtn.style.display = "inline-block";
+                showMoreBtn.innerHTML = `<span>Show More</span> 🔽`;
+
+                showMoreBtn.onclick = () => {
+                    showingAll = !showingAll;
+                    if (showingAll) {
+                        displayIPOs(ipos);
+                        showMoreBtn.innerHTML = `<span>Show Less</span> 🔼`;
+                    } else {
+                        displayIPOs(ipos.slice(0, initialCount));
+                        showMoreBtn.innerHTML = `<span>Show More</span> 🔽`;
+                    }
+                };
+            }
+
+            function displayIPOs(ipoArray) {
+                ipoList.innerHTML = "";
+                ipoArray.forEach(ipo => {
+                    const card = document.createElement("div");
+                    card.className = "ipo-card";
+                    card.innerHTML = `
+                        <h3>${ipo.name} (${ipo.symbol})</h3>
+                        <p><strong>Exchange:</strong> ${ipo.exchange}</p>
+                        <p><strong>Date:</strong> ${ipo.date}</p>
+                        <p><strong>Shares:</strong> ${ipo.numberOfShares?.toLocaleString() || 'N/A'}</p>
+                        <p><strong>Price:</strong> ${ipo.price || 'N/A'}</p>
+                    `;
+                    ipoList.appendChild(card);
+                });
+            }
+        })
+        .catch(err => {
+            console.error("Error loading IPOs:", err);
+            loader.style.display = "none";
+            ipoList.innerHTML = `<p style="color: red;">Failed to load IPO data.</p>`;
+        });
+}
+
+
+
+
+
+// **Initial Fetch**
+fetchMarketIndices();
+fetchTopGainersLosers();
+fetchSIPData();
+fetchCurrencyCommodities();
+
+
+// Auto-refresh every 60 seconds
+setInterval(fetchMarketIndices, 300000);
+setInterval(fetchTopGainersLosers, 300000);
+setInterval(fetchSIPData, 300000);
+setInterval(fetchCurrencyCommodities, 300000);
+
+
+</script>
+{% endblock %}

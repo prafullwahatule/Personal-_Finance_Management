@@ -1,0 +1,27 @@
+# dashboard/chat_support.py
+
+# dashboard/chat_support.py
+
+def get_expense_summary(user, entities=None):
+    date_list = entities.get("DATE") if entities and "DATE" in entities else None
+    date = date_list[0] if date_list else "recently"
+    return f"You spent ₹12,000 {date.lower()}."
+
+def generate_detailed_income_summary(user, entities=None):
+    date_list = entities.get("DATE") if entities and "DATE" in entities else None
+    date = date_list[0] if date_list else "this month"
+    return f"Your total income {date.lower()} was ₹55,000, mainly from Salary."
+
+def suggest_investment_strategy(user, entities=None):
+    return "Based on your profile, you can try SIP in Equity Mutual Funds and PPF."
+
+def get_budget_vs_actual_spending(user, entities=None):
+    category = entities.get("MISC") or ["Food"]  # Assuming MISC for category
+    cat = category[0] if isinstance(category, list) else category
+    return f"You are 20% over budget in the {cat} category."
+
+def guide_profile_update(user, entities=None):
+    return "To update your profile, go to Settings → Edit Profile."
+
+def handle_account_deletion(user, entities=None):
+    return "To delete your account, go to Settings → Delete Account and verify via OTP."

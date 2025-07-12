@@ -1,0 +1,245 @@
+/* ===== FLEX CONTAINER ===== */
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px 16px;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #1a2634;
+  border: 1px solid #66767e;
+  font-family: 'Segoe UI', sans-serif;
+  border-radius: 12px;
+}
+
+/* ===== HEADINGS ===== */
+.h2-main-heading,
+.h2-manage-income {
+  width: 100%;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.h2-main-heading {
+  font-size: 2rem;
+}
+
+.h2-manage-income {
+  font-size: 1.5rem;
+}
+
+/* ===== income SUMMARY TABLE CONTAINER ===== */
+.income-summary {
+  flex: 1 1 580px;
+  min-width: 320px;
+  background-color: #1c1f24;
+  border: 1px solid #66767e;
+  padding: 20px;
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.income-summary table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  color: #ffffff;
+  min-width: 500px;
+}
+
+.income-summary th,
+.income-summary td {
+  padding: 12px;
+  text-align: left;
+  color: #cecece;
+  border: 1px solid #007bff;
+}
+
+.income-summary th {
+  background-color: #2c313a;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.income-summary .add-income-table-footer {
+  background-color: #2c313a !important;
+  font-weight: bold;
+  text-align: right;
+}
+
+.income-summary tr:hover td {
+  background-color: #2c313a;
+  color: #007bff;
+  cursor: pointer;
+}
+
+
+
+
+/* ===== income FORM CONTAINER ===== */
+.income-form-container {
+  flex: 1 1 480px;
+  min-width: 320px;
+  background-color: #1c1f24;
+  border: 1px solid #66767e;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.income-form-container:focus-within {
+  border-color: #1e7e34;
+  box-shadow: 0 0 4px 0px #1e7e34;
+}
+
+/* ===== FORM GROUPS ===== */
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: 500;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.income-form-container input[type="number"],
+.income-form-container input[type="text"],
+.income-form-container select,
+.income-form-container input[type="date"],
+.income-form-container textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #1a2634;
+  border: 1px solid #66767e;
+  color: #ffffff;
+  transition: border 0.3s ease;
+  box-sizing: border-box;
+}
+
+.expense-form-container input:focus-within {
+  border-color: #1e7e34 !important;
+  box-shadow: 0 0 4px 0px #1e7e34;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #1e7e34 !important;
+  box-shadow: 0 0 4px 0px #1e7e34;
+  outline: none;
+}
+
+textarea {
+  height: 80px;
+  resize: vertical;
+}
+
+/* ===== SUBMIT BUTTON ===== */
+.submit-btn {
+  background-color: #10b981;
+  color: white;
+  padding: 12px 18px;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #1e7e34;
+  box-shadow: 0 0 4px 0px #1e7e34;
+}
+
+/* ===== ERROR MESSAGES ===== */
+.error {
+  color: #dc2626;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+/* ===== BACK LINK ===== */
+.back-link {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #60a5fa;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.back-link a::before {
+  content: '←';
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.back-link a:hover {
+  color: #3b82f6;
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.back-link a:hover::before {
+  transform: translateX(-4px);
+}
+
+/* ===== RESPONSIVE STYLES ===== */
+@media (max-width: 900px) {
+  .flex-container {
+    flex-direction: column;
+    padding: 16px;
+    gap: 20px;
+  }
+
+  .income-summary,
+  .income-form-container {
+    flex: 1 1 100%;
+    min-width: 100%;
+  }
+
+  .income-summary table {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .h2-main-heading {
+    font-size: 1.5rem;
+  }
+
+  .h2-manage-income {
+    font-size: 1.2rem;
+  }
+
+  .submit-btn {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+
+  input[type="number"],
+  input[type="text"],
+  input[type="date"],
+  select,
+  textarea {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+}

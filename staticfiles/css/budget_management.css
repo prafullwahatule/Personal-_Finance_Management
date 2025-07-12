@@ -1,0 +1,193 @@
+/* ===== MAIN CONTAINER ===== */
+.manage-budget-limits-container {
+  margin-top: 20px;
+  padding: 30px;
+  background-color: #3b3b3b;
+  border: 1px solid #000;
+  border-radius: 12px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ===== HEADINGS ===== */
+.h2-main-heading,
+.h2-manage-budget {
+  text-align: center;
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.h2-manage-budget {
+  font-size: 1.5rem;
+}
+
+/* ===== FLEX CONTAINER ===== */
+.flex-container {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+/* ===== TABLE CONTAINER ===== */
+.table-container {
+  flex: 2 1 0;
+  min-width: 280px;
+  width: 100%;
+  background-color: #333;
+  border: 1px solid #000;
+  padding: 20px;
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+/* ===== TABLE STYLING ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  min-width: 600px;
+}
+
+table th,
+table td {
+  padding: 15px;
+  text-align: left;
+  font-size: 16px;
+  border: 1px solid #000;
+  color: #ffffff;
+}
+
+table th {
+  background-color: #374151;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+table td {
+  background-color: #333;
+}
+
+table tr:hover td {
+  background-color: #1f1f1f;
+  cursor: pointer;
+}
+
+/* ===== FORM CONTAINER ===== */
+.form-container {
+  flex: 1 1 0;
+  min-width: 280px;
+  background-color: #333;
+  border: 1px solid #000;
+  padding: 12px 16px;  /* Reduced padding */
+  border-radius: 12px;
+}
+
+/* Reduced vertical spacing between fields */
+form div {
+  margin-bottom: 10px;  /* was 15px */
+}
+
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+input[type="number"],
+select {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: #3b3b3b;
+  border: 1px solid #000;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #ffffff;
+  box-sizing: border-box;
+  transition: border 0.3s;
+}
+
+input:focus,
+select:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+/* ===== BUTTON STYLING ===== */
+button {
+  background-color: #10b981;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #059669;
+}
+
+/* ===== DELETE ICON ===== */
+.delete-icon {
+  cursor: pointer;
+  font-size: 15px;
+  color: #ffffff;
+}
+
+.delete-icon:hover {
+  transform: scale(1.1);
+  color: red;
+}
+
+/* ===== MESSAGE ===== */
+#message {
+  margin-top: 10px;
+  font-weight: 500;
+  color: #16a34a;
+}
+
+.hidden {
+  display: none;
+}
+
+/* ===== BACK LINK ===== */
+.back-link {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #60a5fa; /* lighter blue for better contrast */
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.back-link a::before {
+  content: '←'; /* back arrow */
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.back-link a:hover {
+  color: #3b82f6;
+  background-color: rgba(59, 130, 246, 0.1);
+  text-decoration: none;
+}
+
+.back-link a:hover::before {
+  transform: translateX(-4px); /* slight slide on hover */
+}

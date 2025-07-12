@@ -1,0 +1,142 @@
+/* Expense Analysis Section Container */
+.expense-analysis-container {
+  display: block;
+  max-width: 100%;
+  margin: 20px auto;
+  padding: 30px;
+  background-color: #1a2634;
+  border: 1px solid #66767e;
+  border-radius: 12px;
+  box-sizing: border-box; /* Important for padding */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', sans-serif;
+  width: auto;
+  /* Optional max-width to limit container on big screens */
+  max-width: 100%;
+  /* Add a subtle transition for smooth border/shadow changes */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for the main expense analysis container */
+.expense-analysis-container:hover {
+  border-color: #e62222; /* Change border color on hover, matching expense theme */
+  box-shadow: 0 0 10px rgba(230, 34, 34, 0.6); /* Add a subtle glow, matching expense theme */
+  outline: none; /* Remove default outline */
+}
+
+/* Heading */
+.expence-heading { /* Changed to expence-heading to match your HTML */
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #e62222; /* Expense-specific color */
+  margin-bottom: 30px;
+}
+
+/* Card wrapper */
+.expense-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 10px;
+}
+
+/* Single Card */
+.expense-card {
+  background: #1c1f24;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  text-align: center;
+  transition: all 0.3s ease; /* Keep this for individual card lift effect */
+  min-height: 100px;
+  border: 1px solid #66767e;
+  box-sizing: border-box;
+}
+
+.expense-card:hover {
+  transform: translateY(-5px); /* Changed from -4px to -5px for consistency with income cards */
+  border-color: #e62222; /* Matching expense theme */
+  box-shadow: 0 0 8px rgba(230, 34, 34, 0.27); /* Matching expense theme, similar opacity */
+  outline: none;
+}
+
+.expense-card .label {
+  font-size: 0.9rem;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.expense-card .value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #e62222; /* Expense-specific color */
+}
+
+/* Charts container */
+.expence-charts-row { /* Changed to expence-charts-row to match your HTML */
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;    /* full width */
+  box-sizing: border-box;
+}
+
+/* Individual Chart */
+.expence-chart-container {
+  flex: 1 1 48%;
+  background: #1c1f24;
+  padding: 25px;
+  border-radius: 14px;
+  border: 1px solid #66767e;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  /* Min height to prevent collapsing */
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Add transition for smooth hover effect */
+  transition: all 0.3s ease; /* This makes the hover effect smooth */
+}
+
+/* Hover effect for individual expense chart container */
+.expence-chart-container:hover {
+  transform: translateY(-5px); /* Keep the lift effect for charts, consistent with income */
+  border-color: #e62222; /* Matching expense theme */
+  box-shadow: 0 0 8px rgba(230, 34, 34, 0.27); /* Matching expense theme, similar opacity */
+  outline: none;
+}
+
+/* Chart Canvas Responsive */
+.expence-chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;  /* fill container height */
+  max-height: 350px;        /* optional max height */
+  object-fit: contain;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .expence-charts-row {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .expence-chart-container {
+    flex: 1 1 100%;
+    margin-bottom: 0;
+    min-height: 250px;
+  }
+
+  .expence-cards {
+    justify-content: center;
+  }
+}

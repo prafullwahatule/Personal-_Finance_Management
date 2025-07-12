@@ -1,0 +1,551 @@
+
+
+.card-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.finance-card {
+  background-color: #1a2634;
+  border: 1px solid #66767e;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.finance-card:hover {
+  transform: translateY(-5px);
+  border-color: #007bff;
+  box-shadow: 0 0 4px 0px #007bff44;
+}
+
+
+.finance-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.finance-amount .title {
+  font-size: 25px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.finance-amount .amount-value {
+  font-size: 22px;
+  font-weight: bold;
+  color: #007bff; /* Dark green */
+  margin-top: 5px;
+  display: block;
+}
+
+.finance-icon {
+  font-size: 28px;
+  color: #3f51b5; /* Indigo shade */
+}
+
+@media (max-width: 768px) {
+  .card-wrapper {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .finance-icon {
+    font-size: 22px;
+  }
+
+  .finance-amount .amount-value {
+    font-size: 20px;
+  }
+}
+
+
+
+
+/* Container holding all asset suggestion boxes */
+.asset-suggestions-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+/* Suggestion Boxes Styling */
+.stocks-suggestions-box,
+.cryptos-suggestions-box,
+.commodities-suggestions-box,
+.mutual-funds-suggestions-box {
+  background-color: #1a2634;
+  border: 1px solid #66767e;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 1 calc(25% - 20px); /* 4 per row on large screens */
+  box-sizing: border-box;
+}
+
+/* Headings inside boxes */
+.stocks-list-container h3,
+.cryptos-list-container h3,
+.commodities-list-container h3,
+.mutual-funds-list-container h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+#stock-list li,
+#crypto-list li,
+#commodity-list li,
+#mutual-fund-list li {
+  margin: 6px 0;
+  padding: 10px;
+  background: #1c1f24;
+  border-color: #66767e;
+  border-width: 1px; /* Add this line */
+  border-style: solid; /* Add this line (or 'dashed', 'dotted', etc.) */
+  border-radius: 5px;
+  font-size: 14px;
+  color: #ffffff;
+  list-style: none;
+}
+
+/* 
+#stock-list li,
+#crypto-list li,
+#commodity-list li,
+#mutual-fund-list li :hover{
+  transform: translateY(-5px);
+  border-color: #007bff;
+  box-shadow: 0 0 8px #007bff44;
+  outline: none;
+} */
+
+/* Market loader placeholder */
+/* 🌀 Loader Styling */
+.market-loader {
+    width: 40px;
+    height: 40px;
+    margin: 30px auto;
+    border: 4px solid #ccc;
+    border-top: 4px solid #00bfff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Hover effect for cards */
+.stocks-suggestions-box:hover,
+.cryptos-suggestions-box:hover,
+.commodities-suggestions-box:hover,
+.mutual-funds-suggestions-box:hover {
+  transform: translateY(-5px);
+  border-color: #007bff;
+  box-shadow: 0 0 8px #007bff44;
+  outline: none;
+}
+
+/* Responsive Boxes */
+@media (max-width: 1200px) {
+  .stocks-suggestions-box,
+  .cryptos-suggestions-box,
+  .commodities-suggestions-box,
+  .mutual-funds-suggestions-box {
+    flex: 1 1 calc(50% - 20px); /* 2 per row */
+  }
+}
+
+@media (max-width: 768px) {
+  .stocks-suggestions-box,
+  .cryptos-suggestions-box,
+  .commodities-suggestions-box,
+  .mutual-funds-suggestions-box {
+    flex: 1 1 100%; /* 1 per row */
+  }
+}
+
+
+
+/* ---------------- COMPARISON FORM ---------------- */
+.comparison-form {
+  width: 100%;
+  max-width: none;
+  padding: 25px;
+  background-color: #1a2634;
+  border: 1px solid #66767e;
+  border-radius: 12px;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.comparison-form:hover {
+  transform: translateY(-5px);
+  border-color: #007bff;
+  box-shadow: 0 0 8px #007bff44;
+  outline: none;
+}
+
+.comparison-form h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.comparison-form select,
+.comparison-form input {
+  width: 100%;
+  color: white;
+  background-color: #1c1f24;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #66767e; /* Changed border to neutral for consistency */
+  transition: border-color 0.2s ease-in-out, background-color 0.3s ease;
+  font-size: 14px;
+}
+
+.comparison-form select:focus,
+.comparison-form input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px #007bff44;
+  outline: none;
+}
+
+.comparison-form #compare-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 8px;
+  background-color: #85a3c2;
+  border: none;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.comparison-form #compare-btn:hover {
+  background-color: #2474c9;
+}
+
+
+.comparison-results {
+  margin-top: 20px;
+  padding: 0;
+  border: none;
+  min-height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Space between each full asset comparison block */
+  justify-content: center;
+  align-items: flex-start; /* Align items to the start (top) */
+}
+
+/* Overall Wrapper for Each Asset's Comparison (main info + predictions) */
+.asset-comparison-wrapper {
+  flex: 1 1 calc(33.33% - 14px); /* For 3 full asset blocks per row */
+  min-width: auto; /* Minimum width for each asset block (adjusted from 'auto' for consistency) */
+  max-width: 100%; /* Optional: maximum width */
+
+  background-color: #1c1f24; /* Darker background for the overall wrapper */
+  border: 1px solid #66767e;
+  border-radius: 12px;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.asset-comparison-wrapper:hover {
+  transform: translateY(-5px);
+  border-color: #007bff;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.6);
+}
+
+/* Main Asset Info Box (Symbol + Latest Price) */
+.main-asset-info-box {
+  background-color: #1a2634; /* Slightly lighter background */
+  border: 1px solid #66767e;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.main-asset-info-box .asset-symbol {
+  color: #007bff;
+  font-size: 1.5rem; /* Larger font for symbol */
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.main-asset-info-box .latest-price {
+  text-align: center;
+}
+
+.main-asset-info-box .latest-price .label {
+  display: block;
+  font-size: 0.9rem;
+  color: #ddd;
+  margin-bottom: 5px;
+}
+
+.main-asset-info-box .latest-price .value {
+  font-size: 1.8rem; /* Larger font for latest price */
+  font-weight: 700;
+  color: #218926; /* Green for latest price */
+}
+
+
+
+
+.predictions-grid {
+  display: grid; /* Back to using CSS Grid */
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px; /* Space between individual prediction boxes */
+  padding-top: 15px;
+  border-top: 1px solid #66767e; /* Separator from main info */
+}
+
+.prediction-detail-box {
+  /* Removed width: 100%; as grid handles sizing */
+  background-color: #1e2733; /* Distinct background for prediction boxes */
+  padding: 15px 10px; /* Adjusted padding */
+  border-radius: 8px;
+  border: 1px solid #66767e;
+  text-align: center;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Ensure padding/border are included in sizing */
+}
+
+.prediction-detail-box:hover {
+  transform: translateY(-3px);
+  border-color: #00bcd4; /* Teal highlight on hover for predictions */
+}
+
+.prediction-detail-box .prediction-label {
+  display: block; /* Ensure label is above value */
+  font-weight: 500;
+  font-size: 0.85rem; /* Smaller font for label */
+  color: #eee;
+  margin-bottom: 5px;
+}
+
+.prediction-detail-box .prediction-value {
+  display: block; /* Ensure value is below label */
+  font-weight: 600;
+  font-size: 1.1rem; /* Slightly larger for value */
+  color: #00bcd4; /* Teal for prediction values */
+}
+
+
+
+@media (max-width: 992px) {
+  .asset-comparison-wrapper {
+    flex: 1 1 calc(50% - 10px); /* Two full asset blocks per row on medium screens */
+  }
+
+  .predictions-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Adapt prediction boxes */
+  }
+}
+
+@media (max-width: 600px) {
+  .comparison-results {
+    flex-direction: column; /* Stack full asset blocks vertically on small screens */
+    gap: 15px;
+  }
+
+  .asset-comparison-wrapper {
+    flex: 1 1 100%; /* Take full width */
+    min-width: unset;
+    max-width: unset;
+  }
+
+  .predictions-grid {
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); /* Adapt prediction boxes */
+  }
+}
+
+
+/* Responsive */
+@media (max-width: 600px) {
+  .comparison-form {
+    padding: 20px;
+  }
+
+  .comparison-form h3 {
+    font-size: 18px;
+  }
+}
+
+
+
+.table-bordered {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    /* to contain the rounded corners of thead and tbody */
+}
+
+.table-bordered thead {
+    background-color: #f0f0f0;
+}
+
+.table-bordered th,
+.table-bordered td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+    border-right: 1px solid #e5e7eb;
+}
+
+.table-bordered th:last-child,
+.table-bordered td:last-child {
+    border-right: none;
+}
+
+.table-bordered thead th {
+    font-weight: 600;
+    color: #374151;
+    vertical-align: bottom;
+}
+
+.table-bordered tbody tr:last-child td {
+    border-bottom: none;
+}
+
+@media (max-width: 768px) {
+    .table-bordered th,
+    .table-bordered td {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+}
+
+.card {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.card h5 {
+    font-size: 1.25rem;
+    color: #1e293b;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.card p {
+    color: #4b5563;
+    margin-bottom: 0.5rem;
+}
+
+.card ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+    color: #6b7280;
+}
+
+.card li {
+    margin-bottom: 0.25rem;
+}
+
+.results-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.card {
+    flex: 1;
+    min-width: 250px;
+}
+
+@media (max-width: 768px) {
+    .results-container {
+        flex-direction: column;
+    }
+
+    .card {
+        min-width: 100%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.expence-suggestions-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+  padding: 30px;
+  background-color: #1a2634;
+  border: 1px solid #66767e;
+  border-radius: 12px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.expense-suggestions-heading {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: 30px;
+  color: #0579ed !important;
+  border-bottom: 2px solid #4CAF50;
+  padding-bottom: 10px;
+  width: 100%;
+}

@@ -1,0 +1,139 @@
+/* -------------------------------------
+   ✨ Features List Section
+-------------------------------------- */
+.features-list {
+  background-color: rgb(59, 59, 59); /* Dark background */
+  border: 1px solid #000000;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  color: #e2e8f0;
+  margin-bottom: 2rem;
+}
+
+.features-list h3 {
+  color: #ffffff; /* Light blue heading */
+  margin-bottom: 1rem;
+}
+
+.features-list ul {
+  padding-left: 1.5rem;
+  color: #0284c7; /* Blue text for list items */
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.features-list li {
+  margin-bottom: 0.8rem;
+}
+
+.features-list strong {
+  color: #0ea5e9; /* Emphasized text in list */
+}
+
+.features-list p {
+  color: #94a3b8; /* Faded grey-blue paragraph */
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+/* -------------------------------------
+   📄 Report Generator Section
+-------------------------------------- */
+.report-container {
+  background-color: rgb(38, 38, 38); /* Darker card */
+  border: 1px solid #000000;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-top: 2rem;
+}
+
+.report-title {
+  color: #ffffff;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+/* -------------------------------------
+   📝 Form Section
+-------------------------------------- */
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Space between form fields */
+}
+
+/* Form Labels */
+label {
+  font-weight: 600;
+  color: #fefefe;
+}
+
+/* Dropdown Styling */
+select {
+  background-color: rgb(38, 38, 38);
+  border: 1px solid #000000;
+  color: #0ea5e9;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+/* Focus effect for dropdown */
+select:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 5px rgba(14, 165, 233, 0.4);
+}
+
+/* -------------------------------------
+   ⬇️ Download Button Styling
+-------------------------------------- */
+#download-btn {
+  background-color: #38bdf8; /* Primary blue */
+  color: white;
+  font-weight: 700;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+#download-btn:hover {
+  background-color: #0ea5e9; /* Darker on hover */
+}
+
+/* -------------------------------------
+   📌 Active Sidebar Menu Item
+-------------------------------------- */
+.menu-item.active {
+  background-color: rgb(38, 38, 38);
+  color: #0ea5e9;
+  font-weight: bold;
+  border-left: 4px solid #0ea5e9;
+  padding-left: 12px;
+}
+
+/* -------------------------------------
+   📱 Responsive Design
+-------------------------------------- */
+@media (max-width: 768px) {
+  .features-list,
+  .report-container {
+    padding: 1rem;
+  }
+
+  .form-section {
+    gap: 0.75rem;
+  }
+
+  #download-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

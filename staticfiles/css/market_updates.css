@@ -1,0 +1,1408 @@
+/* ============================= */
+/* 🔹 Live Market Indices Section (Improved + Responsive) */
+/* ============================= */
+
+/* 🌌 General Chart Container Styling */
+#chart-container {
+    background-color: #333;
+    border: 1px solid #000000;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+#chart-container h4 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #ffffff;
+    text-align: center;
+}
+
+/* 📈 Chart Canvas Styling */
+#indexChart {
+    width: 100% !important;
+    height: 400px !important;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    #indexChart {
+        height: 320px !important;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 🌀 Loader Styling */
+.market-loader {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #9bbcff;
+    border-top: 4px solid #678dff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 📅 Period Buttons */
+.period-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.period-btn {
+    background-color: rgb(59, 59, 59);
+    border: 1px solid #000000;
+    color: #ccc;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-size: 14px;
+    min-width: 60px;
+    text-align: center;
+}
+
+.period-btn:hover,
+.period-btn.active {
+    background-color: #678dff;
+    color: #fff;
+}
+
+/* ⚠ Error Message Styling */
+.market-alert {
+    text-align: center;
+    color: #ff4d4f;
+    font-weight: bold;
+    padding: 15px;
+    background-color: #333;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+
+
+
+
+
+
+/* 🧱 Market Section */
+.market-section {
+    background-color: rgb(59, 59, 59);
+    border: 1px solid #000000;
+    border-radius: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    width: 100%;
+    max-width: auto;
+
+    margin: 20px auto;
+    padding: 24px;
+    transition: all 0.3s ease-in-out;
+}
+
+.market-section h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #ffffff;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* 🔹 Grid and Cards */
+.market-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.market-card {
+    background-color: #333;
+    border: 1px solid #000000;
+    border-radius: 12px;
+    padding: 18px 20px;
+    font-weight: 500;
+    color: #f1f1f1;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.03);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.market-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 16px #333;
+}
+
+.market-card h3 {
+    font-size: 1.3rem;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.market-price {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.market-percent {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.market-up .market-price,
+.market-up .market-percent {
+    color: #4cd964;
+}
+
+.market-down .market-price,
+.market-down .market-percent {
+    color: #ff4d4d;
+}
+
+.market-up {
+    border-left: 6px solid #28a745;
+}
+
+.market-down {
+    border-left: 6px solid #dc3545;
+}
+
+/* 📱 Responsive Fixes */
+@media (max-width: 1024px) {
+    .market-section {
+        padding: 20px;
+    }
+    .market-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .market-card h3 {
+        font-size: 18px;
+    }
+    .market-price {
+        font-size: 20px;
+    }
+    .market-percent {
+        font-size: 15px;
+    }
+    .period-btn {
+        font-size: 13px;
+        padding: 7px 12px;
+    }
+    #indexChart {
+        height: 300px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .market-section h2 {
+        font-size: 20px;
+    }
+    .market-card {
+        padding: 14px;
+    }
+    .market-card h3 {
+        font-size: 16px;
+    }
+    .market-price {
+        font-size: 18px;
+    }
+    .market-percent {
+        font-size: 14px;
+    }
+    .period-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    #indexChart {
+        height: 260px !important;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 🔹 Commodity - Dark Theme */
+.inv-market-section {
+    background-color: rgb(59, 59, 59);
+    border: 1px solid #000000;
+    border-radius: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    width: 100%;
+    max-width: auto;
+
+    margin: 20px auto;
+    padding: 32px 24px;
+    box-sizing: border-box;
+}
+
+.inv-market-section h2 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #ffffff;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+}
+
+/* 🧱 Responsive Grid */
+.inv-market-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 💳 Card Style */
+.inv-card {
+    background: #333;
+    border: 1px solid #000000;
+    border-radius: 14px;
+    padding: 20px 24px;
+    font-weight: 500;
+    color: #f1f1f1;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.03);
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.inv-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 8px 24px #333;
+}
+
+/* ✨ Text Inside Cards */
+.inv-card-title {
+    font-size: 1.25rem;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.inv-card-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* ⬆️ Price Change Styling */
+.price-up {
+    color: #4cd964;
+    font-weight: 600;
+}
+
+.price-down {
+    color: #ff4d4d;
+    font-weight: 600;
+}
+
+/* 💰 Market Price */
+.market-price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff !important;
+    transition: color 0.3s ease-in-out;
+}
+
+/* 🔄 Loader */
+.currency-loader {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #9bbcff;
+    border-top: 4px solid #678dff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+
+
+
+
+  
+  
+  
+/* Stock Highlights Section */
+#stock-highlights {
+    background-color: rgb(59, 59, 59);
+    border: 1px solid #000000;
+    border-radius: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    width: 100%;
+    max-width: auto;
+
+    margin: 20px auto;
+    padding: 32px 24px;
+    box-sizing: border-box;
+    overflow-x: auto;
+}
+
+/* Header */
+#stock-highlights h2 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #ffffff;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+}
+
+/* Loader */
+#loading-stock {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #9bbcff;
+    border-top: 4px solid #678dff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: auto;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+
+/* Section Titles */
+.highlight-section {
+    margin-bottom: 30px;
+    overflow-x: auto;
+}
+
+.highlight-section h3 {
+    font-size: 20px;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+/* Stock Table Styling */
+.stock-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Table Headings */
+.stock-table th {
+    background-color: #374151;
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 12px 16px;
+    text-align: left;
+}
+
+/* Table Rows */
+.stock-table td {
+    background-color: #333;
+    padding: 12px 16px;
+    color: #ffffff;
+    white-space: nowrap;
+}
+
+.stock-table tr:hover td {
+  background-color: #1f1f1f;
+  cursor: pointer;
+}
+
+/* Timestamp */
+#last-updated {
+    color: #cccccc;
+    font-size: 14px;
+    text-align: right;
+    margin-top: 10px;
+}
+
+/* ⚠ Error Message Styling */
+.error-msg {
+    text-align: center;
+    color: #ff4d4f;
+    font-weight: bold;
+    padding: 15px;
+    background-color: #333;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+
+/* Loader Style */
+.currency-loader {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #9bbcff;
+    border-top: 4px solid #678dff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: auto;
+}
+
+/* Spinner Animation */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+
+
+
+
+
+
+
+
+
+/* ============================= */
+/* 📈📉 Top 5 Stock Gainers & Losers Container */
+/* ============================= */
+.market-container {
+    /* Inheriting core layout properties from .sip-market-container */
+    background-color: rgb(59, 59, 59); /* Dark background */
+    border: 1px solid #000000; /* Solid black border */
+    border-radius: 12px; /* Rounded corners */
+    font-family: 'Segoe UI', sans-serif; /* Consistent font */
+    width: auto; /* Flexible width */
+    max-width: 100%; /* Ensures it doesn't overflow parent */
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Allows sections to wrap on smaller screens */
+    gap: 20px; /* Spacing between the gainer and loser boxes */
+    margin: 20px auto; /* Center horizontally */
+    padding: 20px; /* Inner padding */
+    transition: all 0.3s ease-in-out; /* Smooth transitions */
+    box-sizing: border-box; /* Include padding in total width/height */
+}
+
+/* ============================= */
+/* 📦 Individual Market Box (Gainers/Losers) */
+/* ============================= */
+.market-box {
+    /* Matching .sip-market-section styling for individual cards */
+    flex: 1 1 100%; /* Default: takes full width on small screens */
+    min-width: 280px; /* Minimum width for each box before wrapping */
+    background: #2d2d2d; /* Dark background for boxes, consistent with calendar/news containers */
+    border: 1px solid #000000; /* Solid black border */
+    border-radius: 12px; /* Rounded corners */
+    padding: 20px; /* Inner padding */
+    transition: all 0.3s ease-in-out; /* Smooth transition for hover effects */
+    position: relative; /* For pseudo-elements */
+    color: #ffffff; /* White text color for content */
+    box-sizing: border-box; /* Include padding in total width/height */
+    /* overflow-x: auto; /* Not directly needed here as content is list, not table, but good to keep in mind */
+}
+
+/* Hover effect for Market Boxes - consistent with .sip-market-section:hover */
+.market-box:hover {
+    transform: translateY(-5px); /* Lifts the box slightly on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Darker, more prominent shadow on hover */
+}
+
+/* ============================= */
+/* heading for each market box */
+/* ============================= */
+.market-box h2 {
+    /* Matching .sip-market-section h2 styling for titles */
+    font-size: 22px; /* Standard font size for titles */
+    margin-bottom: 15px; /* Space below the title */
+    color: #ffffff; /* Teal color for titles, consistent with previous sections */
+    font-weight: bold; /* Bold font weight */
+    text-align: center; /* Center align the title */
+    text-transform: uppercase; /* Convert title to uppercase */
+    letter-spacing: 1px; /* Spacing between letters */
+    white-space: normal; /* Allow title to wrap on small screens */
+}
+
+/* ============================= */
+/* 📜 List of Stocks */
+/* ============================= */
+.market-list {
+    list-style: none; /* Remove default list bullets */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+/* Individual list item (stock entry) */
+.market-list li {
+    display: flex; /* Use flexbox for internal layout */
+    align-items: center; /* Vertically center items */
+    justify-content: space-between; /* Space out items horizontally */
+    background: #3b3b3b; /* Slightly lighter dark background, consistent with main wrapper */
+    padding: 14px; /* Inner padding */
+    margin: 6px 0; /* Vertical margin between items */
+    border-radius: 8px; /* Rounded corners for list items */
+    font-weight: bold; /* Bold font weight */
+    font-size: 16px; /* Standard font size */
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out; /* Smooth transitions */
+    position: relative; /* For pseudo-elements */
+    overflow: hidden; /* Hide overflowing content */
+    color: #ffffff; /* White text color for list items */
+}
+
+/* ============================= */
+/* 🟢 Gainers List Specific Styling */
+/* ============================= */
+#gainers-list li {
+    border-left: 5px solid #28a745; /* Green left border for gainers */
+    /* Text color is inherited from .market-list li */
+}
+
+/* Upward trend icon for gainers */
+#gainers-list li::before {
+    content: "📈"; /* Unicode character for upward trend */
+    color: #28a745; /* Green color for the icon */
+    font-size: 18px; /* Size of the icon */
+    margin-right: 12px; /* Space between icon and text */
+}
+
+/* ============================= */
+/* 🔴 Losers List Specific Styling */
+/* ============================= */
+#losers-list li {
+    border-left: 5px solid #dc3545; /* Red left border for losers */
+    /* Text color is inherited from .market-list li */
+}
+
+/* Downward trend icon for losers */
+#losers-list li::before {
+    content: "📉"; /* Unicode character for downward trend */
+    color: #dc3545; /* Red color for the icon */
+    font-size: 18px; /* Size of the icon */
+    margin-right: 12px; /* Space between icon and text */
+}
+
+/* ============================= */
+/* 💫 List Item Hover Effects */
+/* ============================= */
+.market-list li:hover {
+    background: #1f1f1f; /* Darker background on hover, consistent with table rows */
+    transform: translateX(8px); /* Slides the item slightly to the right */
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow on hover */
+}
+
+/* Inner glow effect on hover */
+.market-list li::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.08); /* Semi-transparent white overlay */
+    z-index: -1; /* Place behind content */
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.3s ease-in-out; /* Smooth fade-in */
+}
+
+/* Show inner glow on hover */
+.market-list li:hover::after {
+    opacity: 1; /* Make visible on hover */
+}
+
+/* ---
+
+### 📱 Media Queries for Responsiveness
+
+--- */
+
+/* For screens narrower than 480px (Very small phones) */
+@media (max-width: 480px) {
+    .market-container {
+        padding: 10px; /* Even less padding on very small screens */
+        gap: 10px; /* Reduced gap */
+    }
+    .market-box {
+        padding: 10px; /* Reduced section padding */
+        min-width: auto; /* Allow box to shrink more if needed */
+    }
+    .market-box h2 {
+        font-size: 16px; /* Smaller title font size */
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+    }
+    .market-list li {
+        padding: 10px; /* Reduced padding for list items */
+        font-size: 14px; /* Smaller font size for list items */
+        margin: 5px 0; /* Reduced vertical margin */
+    }
+    #gainers-list li::before,
+    #losers-list li::before {
+        font-size: 16px; /* Slightly smaller icon size */
+        margin-right: 8px; /* Reduced space for icon */
+    }
+    .market-list li:hover {
+        transform: translateX(5px); /* Less dramatic hover slide */
+    }
+}
+
+/* For screens wider than 481px and up to 767px (Phones in landscape, small tablets) */
+@media (min-width: 481px) and (max-width: 767px) {
+    .market-container {
+        padding: 15px;
+        gap: 15px;
+    }
+    .market-box {
+        padding: 15px;
+        /* Flex basis remains 100% here as the two boxes will stack */
+    }
+    .market-box h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+        letter-spacing: 0.7px;
+    }
+    .market-list li {
+        padding: 12px;
+        font-size: 15px;
+        margin: 6px 0;
+    }
+}
+
+/* For screens wider than 768px (Tablets and larger) */
+@media (min-width: 768px) {
+    .market-box {
+        /* On tablets, allow two boxes per row with some spacing */
+        flex: 1 1 calc(50% - 10px); /* Takes approx. 50% width minus half the gap */
+        padding: 18px; /* Slightly reduced padding */
+        min-width: 320px; /* Ensures boxes don't get too small if content is wide */
+    }
+
+    .market-box h2 {
+        font-size: 20px; /* Slightly smaller title on tablets */
+        margin-bottom: 12px;
+    }
+
+    .market-list li {
+        padding: 14px;
+        font-size: 16px;
+        margin: 6px 0;
+    }
+}
+
+/* For screens wider than 1024px (Desktops and larger) */
+@media (min-width: 1024px) {
+    .market-container {
+        padding: 20px; /* Standard padding for desktops */
+        max-width: 1200px; /* Matches the sip-market-container max-width */
+    }
+
+    .market-box {
+        /* On desktops, the two boxes simply share the space */
+        flex: 1; /* Allows flex to distribute space evenly */
+        padding: 20px; /* Standard padding */
+    }
+
+    .market-box h2 {
+        font-size: 22px; /* Standard title size on desktops */
+        margin-bottom: 15px;
+    }
+
+    .market-list li {
+        padding: 14px;
+        font-size: 16px;
+        margin: 6px 0;
+    }
+}
+
+/* For screens wider than 1400px (Large Desktops) */
+@media (min-width: 1400px) {
+    .market-container {
+        max-width: 1400px; /* Increase max width for very large screens, consistent with sip-market-container */
+    }
+}
+
+
+
+
+
+
+
+/* ============================= */
+/* 🔹 Market Container - Flexbox Layout */
+/* ============================= */
+.sip-market-container {
+    background-color: rgb(59, 59, 59);
+    border: 1px solid #000000;
+    border-radius: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    width: auto; /* Adjust width for better responsiveness on smaller screens */
+    max-width: 100%; /* Set a maximum width for larger screens */
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Allows items to wrap to the next line on smaller screens */
+    gap: 20px; /* Spacing between sections */
+    margin: 20px auto; /* Center the container horizontally */
+    padding: 20px; /* Inner padding */
+    transition: all 0.3s ease-in-out; /* Smooth transition for any changes */
+}
+
+/* ============================= */
+/* 🔹 Market Section (Individual Cards) */
+/* ============================= */
+.sip-market-section {
+    flex: 1 1 100%; /* Default: takes full width on small screens */
+    min-width: 280px; /* Minimum width for each section before wrapping */
+    background: #333;
+    border: 1px solid #000000;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease-in-out; /* Smooth transition for hover effects */
+    position: relative; /* Needed if you plan to position child elements absolutely */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    overflow-x: auto; /* Allow horizontal scroll for content inside if it overflows */
+}
+
+/* Hover effect for Market Sections */
+.sip-market-section:hover {
+    transform: translateY(-5px); /* Lifts the section slightly on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Darker, more prominent shadow on hover */
+}
+
+/* ============================= */
+/* 🔹 Section Title */
+/* ============================= */
+.sip-market-section h2 {
+    font-size: 22px; /* Standard font size for titles */
+    margin-bottom: 15px; /* Space below the title */
+    color: #ffffff; /* White text color */
+    font-weight: bold; /* Bold font weight */
+    text-align: center; /* Center align the title */
+    text-transform: uppercase; /* Convert title to uppercase */
+    letter-spacing: 1px; /* Spacing between letters */
+    white-space: normal; /* Allow title to wrap on small screens */
+}
+
+/* ============================= */
+/* 🔹 Table Styling within Sections */
+/* ============================= */
+.sip-market-section table {
+    width: 100%; /* Table takes full width of its parent section */
+    border-collapse: collapse; /* Collapses table borders */
+    border-radius: 8px; /* Rounds the corners of the table */
+    overflow: hidden; /* Hides content that overflows the rounded corners */
+    background: #333; /* Dark background for the table */
+    color: #ffffff; /* White text color for table content */
+    text-align: left; /* Left align table text */
+    font-size: 16px; /* Standard font size for table content */
+    min-width: 300px; /* Ensure table doesn't get too narrow, allow scroll if needed */
+}
+
+/* Table header styling */
+.sip-market-section thead {
+    background-color: #374151; /* Dark blue background for table header */
+    color: #ffffff; /* White text color for header */
+    font-weight: 600; /* Semi-bold font weight for header */
+}
+
+/* Hover effect for table rows */
+.sip-market-section tr:hover td {
+    background-color: #1f1f1f; /* Darker background on row hover */
+    cursor: pointer; /* Changes cursor to a pointer on hover */
+}
+
+/* Table header and data cell styling */
+.sip-market-section th,
+.sip-market-section td {
+    padding: 14px; /* Padding inside table cells */
+    border: 1px solid #555a72; /* Border for table cells */
+    white-space: nowrap; /* Keep content on a single line */
+}
+
+
+/* ============================= */
+/* 🔹 Performance Indicators (Positive/Negative) */
+/* ============================= */
+/* Icon for positive performance */
+.sip-market-section tbody tr td:last-child.positive::before {
+    content: "📈 "; /* Green upward trend emoji */
+    color: #28a745; /* Green color for the icon */
+    font-size: 16px; /* Size of the icon */
+}
+
+/* Icon for negative performance */
+.sip-market-section tbody tr td:last-child.negative::before {
+    content: "📉 "; /* Red downward trend emoji */
+    color: #dc3545; /* Red color for the icon */
+    font-size: 16px; /* Size of the icon */
+}
+
+/* ============================= */
+/* 📱 Media Queries for Responsiveness */
+/* ============================= */
+
+/* For screens narrower than 480px (Very small phones) */
+@media (max-width: 480px) {
+    .sip-market-container {
+        padding: 10px; /* Even less padding on very small screens */
+        gap: 10px; /* Reduced gap */
+    }
+    .sip-market-section {
+        padding: 10px; /* Reduced section padding */
+        min-width: auto; /* Allow section to shrink more if needed */
+    }
+    .sip-market-section h2 {
+        font-size: 16px; /* Smaller title font size */
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+    }
+    .sip-market-section table {
+        font-size: 12px; /* Smaller table font size */
+        min-width: 280px; /* Keep a minimum width for the table */
+    }
+    .sip-market-section th,
+    .sip-market-section td {
+        padding: 8px 6px; /* Even less padding for table cells */
+    }
+}
+
+
+/* For screens wider than 481px and up to 767px (Phones in landscape, small tablets) */
+@media (min-width: 481px) and (max-width: 767px) {
+    .sip-market-container {
+        padding: 15px;
+        gap: 15px;
+    }
+    .sip-market-section {
+        padding: 15px;
+    }
+    .sip-market-section h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+        letter-spacing: 0.7px;
+    }
+    .sip-market-section table {
+        font-size: 13px;
+        min-width: 320px; /* Maintain minimum width for table */
+    }
+    .sip-market-section th,
+    .sip-market-section td {
+        padding: 10px 8px;
+    }
+}
+
+
+/* For screens wider than 768px (Tablets and larger) */
+@media (min-width: 768px) {
+    .sip-market-section {
+        /* On tablets, allow two sections per row with some spacing */
+        flex: 1 1 calc(50% - 10px); /* Takes approx. 50% width minus half the gap */
+        padding: 18px; /* Slightly reduced padding */
+    }
+
+    .sip-market-section h2 {
+        font-size: 20px; /* Slightly smaller title on tablets */
+        margin-bottom: 12px;
+    }
+
+    .sip-market-section table {
+        font-size: 14px; /* Adjust table font size for tablets */
+        min-width: auto; /* Remove explicit min-width here; flex handles it */
+    }
+
+    .sip-market-section th,
+    .sip-market-section td {
+        padding: 12px; /* Reduced table cell padding */
+    }
+}
+
+/* For screens wider than 1024px (Desktops and larger) */
+@media (min-width: 1024px) {
+    .sip-market-container {
+        padding: 30px; /* Full padding for desktops */
+    }
+
+    .sip-market-section {
+        /* On desktops, allow three sections per row with some spacing */
+        flex: 1 1 calc(33.333% - 14px); /* Takes approx. 33.333% width minus half the gap */
+        padding: 20px; /* Standard padding */
+    }
+
+    .sip-market-section h2 {
+        font-size: 22px; /* Standard title size on desktops */
+        margin-bottom: 15px;
+    }
+
+    .sip-market-section table {
+        font-size: 16px; /* Standard table font size on desktops */
+    }
+
+    .sip-market-section th,
+    .sip-market-section td {
+        padding: 14px; /* Standard table cell padding */
+    }
+}
+
+/* For screens wider than 1400px (Large Desktops) */
+@media (min-width: 1400px) {
+    .sip-market-container {
+        max-width: 1400px; /* Increase max width for very large screens */
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+/* 🧱 Main Wrapper */
+.calendar-news-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    box-sizing: border-box;
+    background-color: #3b3b3b;
+    border: 1px solid #000;
+    border-radius: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    max-width: 100%; /* Slightly less width for padding on mobile */
+    width: auto; /* Max width to prevent content from stretching too wide on large screens */
+    padding: 20px; /* Reduced padding for mobile */
+    margin: 20px auto;
+    gap: 15px; /* Reduced gap for mobile */
+}
+
+/* 🔆 Economic Calendar Container */
+.economic-calendar-container {
+    flex: 1 1 100%; /* Takes full width on mobile */
+    background-color: #2d2d2d;
+    border: 1px solid #000;
+    border-radius: 12px;
+    padding: 15px; /* Reduced padding for mobile */
+    color: #fff;
+    min-height: auto; /* Auto height on mobile */
+    max-height: none; /* No max height on mobile */
+    overflow: auto; /* Scroll as needed on mobile */
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.economic-calendar-container:hover {
+    transform: translateY(-3px); /* Less hover effect on mobile */
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4); /* Less hover effect on mobile */
+}
+
+.economic-calendar-title {
+    font-size: 18px; /* Smaller font size on mobile */
+    margin-bottom: 10px; /* Reduced margin on mobile */
+    color: #ffffff;
+    text-align: center;
+    letter-spacing: 0.3px; /* Reduced letter spacing on mobile */
+}
+
+.economic-calendar-content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.economic-calendar-scroll-wrapper {
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: auto;
+    border-radius: 6px;
+    background-color: #2d2d2d;
+}
+
+/* 🖞 Table Styling */
+.economic-calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px; /* Smaller font size on mobile */
+    color: #ffffff;
+    background-color: #2d2d2d;
+}
+
+.economic-calendar-table th,
+.economic-calendar-table td {
+    padding: 8px 10px; /* Reduced padding on mobile */
+    border: 1px solid #555a72;
+    text-align: left;
+    white-space: nowrap;
+}
+.economic-calendar-table tr:hover td {
+    background-color: #1f1f1f;
+    cursor: pointer;
+}
+.economic-calendar-table th {
+    background-color: #374151;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* 📅 Download Button */
+.economic-calendar-download-btn {
+    margin: 8px 0; /* Reduced margin on mobile */
+    background-color: #1f7d88;
+    color: #ffffff;
+    padding: 5px 10px; /* Reduced padding on mobile */
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    align-self: flex-start;
+    font-size: 12px; /* Smaller font size on mobile */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.economic-calendar-download-btn:hover {
+    background-color: #165e66;
+    transform: scale(1.02); /* Less scale effect on mobile */
+}
+
+/* 🟩 News Ticker Container */
+.news-ticker-container {
+    flex: 1 1 100%; /* Takes full width on mobile */
+    background-color: #2d2d2d;
+    border: 1px solid #000;
+    padding: 15px; /* Reduced padding on mobile */
+    border-radius: 12px;
+    color: #ffffff;
+    min-height: auto; /* Auto height on mobile */
+    max-height: none; /* No max height on mobile */
+    overflow-y: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.news-ticker-container:hover {
+    transform: translateY(-3px); /* Less hover effect on mobile */
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4); /* Less hover effect on mobile */
+}
+
+.news-title {
+    font-size: 18px; /* Smaller font size on mobile */
+    margin-bottom: 10px; /* Reduced margin on mobile */
+    color: #ffffff;
+    text-align: center;
+    letter-spacing: 0.3px; /* Reduced letter spacing on mobile */
+}
+
+.news-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Reduced gap on mobile */
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.news-box {
+    background-color: #3b3b3b;
+    border: 1px solid #000;
+    border-radius: 12px;
+    padding: 15px; /* Reduced padding on mobile */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.news-box:hover {
+    transform: translateY(-3px); /* Less hover effect on mobile */
+}
+
+.news-box h4 {
+    margin: 0;
+    font-size: 14px; /* Smaller font size on mobile */
+    color: #84a9ff;
+    font-weight: 600;
+}
+
+.news-box p {
+    margin-top: 5px;
+    font-size: 12px; /* Smaller font size on mobile */
+    color: #ffffff;
+}
+
+
+
+/* 📱 Media Query for Tablets (min-width: 768px) */
+@media (min-width: 768px) {
+    .calendar-news-wrapper {
+        padding: 25px; /* Slightly more padding for tablets */
+        gap: 20px; /* Increased gap for tablets */
+    }
+    .economic-calendar-container,
+    .news-ticker-container {
+        padding: 20px; /* Standard padding for tablets */
+        min-height: 400px; /* Minimum height for tablets */
+        max-height: 400px; /* Maximum height for tablets */
+    }
+    .economic-calendar-title,
+    .news-title {
+        font-size: 20px; /* Slightly larger font size for tablets */
+        margin-bottom: 12px;
+        letter-spacing: 0.4px;
+    }
+    .economic-calendar-table {
+        font-size: 13px; /* Slightly larger table font size for tablets */
+    }
+    .economic-calendar-table th,
+    .economic-calendar-table td {
+        padding: 10px 12px; /* Slightly more padding for table cells */
+    }
+    .economic-calendar-download-btn {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+    .news-box h4 {
+        font-size: 15px;
+    }
+    .news-box p {
+        font-size: 13px;
+    }
+}
+
+/* 💻 Media Query for Desktops (min-width: 1024px) */
+@media (min-width: 1024px) {
+    .calendar-news-wrapper {
+        padding: 30px; /* Standard padding for desktops */
+        gap: 20px; /* Standard gap for desktops */
+    }
+    .economic-calendar-container {
+        flex: 1 1 64%; /* Takes about 64% width on desktops */
+        min-height: 500px; /* Standard minimum height for desktops */
+        max-height: 500px; /* Standard maximum height for desktops */
+        padding: 20px;
+    }
+    .news-ticker-container {
+        flex: 1 1 34%; /* Takes about 34% width on desktops */
+        min-height: 500px; /* Standard minimum height for desktops */
+        max-height: 500px; /* Standard maximum height for desktops */
+        padding: 20px;
+    }
+    .economic-calendar-title,
+    .news-title {
+        font-size: 22px; /* Standard font size for desktops */
+        margin-bottom: 15px;
+        letter-spacing: 0.5px;
+    }
+    .economic-calendar-table {
+        font-size: 14px; /* Standard table font size for desktops */
+    }
+    .economic-calendar-table th,
+    .economic-calendar-table td {
+        padding: 12px 14px; /* Standard padding for table cells */
+    }
+    .economic-calendar-download-btn {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+    .news-box h4 {
+        font-size: 16px;
+    }
+    .news-box p {
+        font-size: 14px;
+    }
+    .economic-calendar-container:hover,
+    .news-ticker-container:hover,
+    .news-box:hover {
+        transform: translateY(-5px); /* Standard hover effect for desktops */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Standard hover effect for desktops */
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 🔷 IPO Section Container */
+.ipo-section-dark {
+    background-color: rgb(59, 59, 59);
+    border: 1px solid #000000;
+    border-radius: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    width: 100%;
+    padding: 30px;
+    color: #ffffff;
+    margin: 20px auto;
+    box-sizing: border-box;
+}
+
+/* 🏷️ Section Heading */
+.ipo-heading {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #9bd1ff; /* Soft bluish */
+    text-align: center;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+/* ⬇️ Fetch Button */
+.ipo-fetch-btn {
+    display: block;
+    margin: 0 auto 30px;
+    padding: 12px 24px;
+    background-color: #678dff; /* Soft blue */
+    border: none;
+    color: #ffffff;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.ipo-fetch-btn:hover {
+    background-color: #4c6de6;
+    color: #ffffff;
+}
+
+/* 📦 IPO List Container */
+.ipo-list-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* 📇 IPO Card */
+.ipo-card {
+    background-color: #333;
+    border: 1px solid #000000;
+    border-radius: 12px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ipo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px #333; /* blue glow */
+}
+
+.ipo-card h3 {
+    color: #84a9ff; /* modern blue */
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.ipo-card p {
+    margin: 6px 0;
+    font-size: 14px;
+    color: #e0e0e0;
+}
+
+.ipo-card p strong {
+    color: #ffffff;
+}
+
+/* 🔽 Show More Button Container */
+.show-more-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 25px;
+    padding-right: 10px;
+}
+
+/* 🆕 Show More Button Styling */
+#show-more-btn {
+    padding: 10px 24px;
+    background-color: #678dff;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+#show-more-btn:hover {
+    background-color: #4c6de6;
+}
+
+/* 🔄 Loader */
+.currency-loader {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #9bbcff;
+    border-top: 4px solid #678dff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 📱 Responsive Layout */
+@media (max-width: 768px) {
+    .ipo-list-wrapper {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+
+    .ipo-fetch-btn,
+    #show-more-btn {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ipo-heading {
+        font-size: 22px;
+    }
+
+    .ipo-fetch-btn,
+    #show-more-btn {
+        font-size: 14px;
+        padding: 10px 16px;
+    }
+}

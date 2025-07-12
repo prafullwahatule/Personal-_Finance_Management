@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Personal Finance Management - Manage Budget Limits{% endblock %}
+{% block header %}Expense Tracker{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/manage_budget_limit.css' %}">
+
+<div class="manage-budget-limits-container">
+    <h2 class="h2-main-heading">Budget Management</h2>
+    <div id="message" class="expense-alert" style="display:none; margin-bottom:10px;"></div>
+
+    <div class="flex-container">
+        <div class="table-container">
+            <h2 class="h2-manage-budget">Current Budget Limits</h2>
+            {% if budget_limits %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Limit (₹)</th>
+                            <th>Frequency</th>
+                            <th>Set On</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for limit in budget_limits %}
+                            <tr id="budget-row-{{ limit.category }}-{{ limit.frequency }}">
+                                <td>{{ limit.get_category_display }}</td>
+                                <td>{{ limit.limit }}</td>
+                                <td>{{ limit.get_frequency_display }}</td>
+                                <td>{{ limit.created_at|date:"F j, Y" }}</td>
+                                <td>
+                                    <span class="delete-icon" 
+                                          data-category="{{ limit.category }}" 
+                                          data-frequency="{{ limit.frequency }}" 
+                                          title="Delete">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>You haven't set any budget limits yet.</p>
+            {% endif %}
+            
+        </div>
+
+        <div class="form-container">
+            <h2 class="h2-manage-budget">Set New Budget Limit</h2>
+            <form id="budgetLimitForm" method="post">
+                {% csrf_token %}
+                <div>
+                    <label for="category">Category:</label>
+                    <select id="category" name="category" required>
+                        <option value="" disabled selected>Select a Category</option>
+                        {% for category_choice, category_name in category_choices %}
+                            <option value="{{ category_choice }}">{{ category_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label for="limit">Limit (₹):</label>
+                    <input type="number" id="limit" name="limit" step="0.01" required>
+                </div>
+                <div>
+                    <label for="frequency">Frequency:</label>
+                    <select id="frequency" name="frequency" required>
+                        <option value="monthly" selected>Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+                <button type="submit">Save Limit</button>
+            </form>
+            <div class="back-link" style="margin-top: 15px;">
+                <a href="{% url 'expense_tracker' %}">← Back to Expense Tracker</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/manage_budget_limits.js' %}"></script>
+{% endblock %}

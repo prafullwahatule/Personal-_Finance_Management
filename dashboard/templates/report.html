@@ -1,0 +1,92 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block title %}Personal FinanceManagement - Report{% endblock %} 
+{% block header %}Download Report{% endblock%} 
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/reports.css' %}" />
+
+<div class="features-list">
+  <h3>📋 Available Report Features:</h3>
+  <ul>
+    <li>
+      <strong>Monthly, Annual, and Overall financial reports:</strong> Analyze
+      your income, expenses, and savings for a specific month, full year, or
+      across your entire financial history.
+    </li>
+    <li>
+      <strong>Custom date range reports coming soon:</strong> Soon you will be
+      able to generate reports for any custom time period that fits your unique
+      needs.
+    </li>
+    <li>
+      <strong>Download reports in PDF, Excel, or CSV formats:</strong> Export
+      your data in popular formats to view offline, share with your advisor, or
+      keep for records.
+    </li>
+    <li>
+      <strong>Combined Income & Expense analysis:</strong> Get a comprehensive
+      overview by seeing how your earnings and spendings interact to understand
+      your net cash flow.
+    </li>
+    <li>
+      <strong>Budget vs Actual Spending insights:</strong> Track your planned
+      budget against what you actually spent to identify areas to improve and
+      save money.
+    </li>
+    <li>
+      <strong>Graphical representations for better understanding:</strong>
+      Visual charts and graphs help you quickly grasp your financial patterns
+      and trends.
+    </li>
+    <li>
+      <strong>Expense category-wise breakdown:</strong> See exactly where your
+      money is going — groceries, entertainment, bills — and make informed
+      adjustments.
+    </li>
+    <li>
+      <strong>Trend analysis to track your financial growth:</strong> Monitor
+      your financial progress over time to stay motivated and meet your goals.
+    </li>
+    <li>
+      <strong>Easy-to-understand summaries and actionable tips:</strong> Receive
+      clear summaries of your finances along with personalized advice to improve
+      budgeting and saving.
+    </li>
+    <li>
+      <strong>Future features: Customizable report filters and more:</strong>
+      Soon, you’ll be able to tailor reports to your specific preferences for
+      even deeper insights.
+    </li>
+  </ul>
+  <p>
+    Download and save your reports anytime to track your personal finance
+    journey effectively!
+  </p>
+
+  <div class="report-container">
+    <h2 class="report-title">Generate Your Financial Report</h2>
+  
+    <div class="form-section-inline">
+      <label for="duration-select">Report Duration :</label>
+      <select id="duration-select" name="duration">
+        <option>Select Duration</option>
+        <option value="monthly">Monthly</option>
+        <option value="annual">Annual</option>
+        <option value="overall">Overall</option>
+      </select>      
+      <label for="format-select">Format :</label>
+      <select id="format-select" name="format">
+        <option>Select Format</option>
+        <option value="pdf">PDF</option>
+        <option value="excel">Excel</option>
+        <option value="csv">CSV</option>
+      </select>      
+      <button id="download-btn">Download Report</button>
+    </div>
+  </div>
+
+</div>
+
+
+<script src="{% static 'js/dashboard_report.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,255 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load humanize %}
+{% block title %}Personal Finance Management - dashboard{% endblock %} 
+{% block header %}Dashboard{% endblock %} 
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+<link rel="stylesheet" href="{% static 'css/income_analysis.css' %}" />
+<link rel="stylesheet" href="{% static 'css/expense_analysis.css' %}">
+<link rel="stylesheet" href="{% static 'css/combined-analysis_dashboard.css' %}">
+
+
+
+
+<div class="card-container">
+  <div class="card-wrapper">
+
+      <!-- Annual Income Card -->
+      <div class="finance-card">
+          <div class="finance-card-header">
+              <div class="finance-amount">
+                  <span class="title">Income</span>
+                  <span class="amount-value">₹ {{ user_financial_data.annual_income|intcomma }}</span>
+              </div>
+              <i class="fas fa-rupee-sign finance-icon"></i>
+          </div>
+      </div>
+
+      <!-- Expenses Card -->
+      <div class="finance-card">
+          <div class="finance-card-header">
+              <div class="finance-amount">
+                  <span class="title">Expenses</span>
+                  <span class="amount-value">₹ {{ monthly_expense_total|intcomma }}</span>  
+              </div>
+              <i class="fas fa-wallet finance-icon"></i>
+          </div>
+      </div>
+
+      <!-- Savings Card -->
+      <div class="finance-card">
+          <div class="finance-card-header">
+              <div class="finance-amount">
+                  <span class="title">Savings</span>
+                  <span class="amount-value">₹ {{ user_financial_data.savings|intcomma }}</span>  
+              </div>
+              <i class="fas fa-piggy-bank finance-icon"></i>
+          </div>
+      </div>
+
+      <!-- Investments Card -->
+      <div class="finance-card">
+          <div class="finance-card-header">
+              <div class="finance-amount">
+                  <span class="title">Investments</span>
+                  <span class="amount-value">₹ {{ user_financial_data.existing_investments|intcomma }}</span>  
+              </div>
+              <i class="fas fa-chart-line finance-icon"></i>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+<div class="asset-suggestions-wrapper">
+  <!-- Stocks -->
+  <div class="stocks-suggestions-box">
+    <div class="stocks-list-container">
+      <h3>🔥 Suggested Stocks</h3>
+      <ul id="stock-list"></ul>
+      <div class="market-loader"></div>
+    </div>
+  </div>
+
+  <!-- Cryptos -->
+  <div class="cryptos-suggestions-box">
+    <div class="cryptos-list-container">
+      <h3>🔥 Suggested Cryptocurrencies</h3>
+      <ul id="crypto-list" class="crypto-list"></ul>
+      <div class="market-loader"></div>
+    </div>
+  </div>
+
+  <!-- Commodities -->
+  <div class="commodities-suggestions-box">
+    <div class="commodities-list-container">
+      <h3>🔥 Suggested Commodities</h3>
+      <ul id="commodity-list" class="commodity-list"></ul>
+      <div class="market-loader"></div>
+    </div>
+  </div>
+
+  <!-- Mutual Funds -->
+  <div class="mutual-funds-suggestions-box">
+    <div class="mutual-funds-list-container">
+      <h3>🔥 Suggested Mutual Funds</h3>
+      <ul id="mutual-fund-list" class="mutual-fund-list"></ul>
+      <div class="market-loader"></div>
+    </div>
+  </div>
+
+  <!-- Compare Section -->
+  <div class="comparison-form">
+    <h3>⚖️ Compare Your Assets</h3>
+    <select id="asset-type" class="form-control">
+      <option value="stock">Stocks</option>
+      <option value="crypto">Cryptos</option>
+      <option value="commodity">Commodities</option>
+      <option value="mutual_fund">Mutual Funds</option>
+    </select>
+    
+    <input
+      type="text"
+      id="asset-symbols"
+      class="form-control mt-2"
+      placeholder="Enter symbols (comma separated)"
+    />
+    <button id="compare-btn" class="btn btn-primary mt-2">Compare</button>
+
+    <div id="comparison-results" class="comparison-results mt-3"></div>
+  </div>
+</div>
+
+<!--  bhai aaab age se jo code hai na vo expence Advice ke liye hai -->
+
+<!-- Income Analysis Section -->
+
+<div id="income-analysis-section" class="income-analysis-container">
+  <h3 class="section-heading">Income Analytics</h3>
+
+  <div class="income-cards">
+    <!-- Cards will be dynamically filled here -->
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-container">
+      <h3 class="label">Income Source Distribution</h3>
+      <canvas id="sourcePieChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <h3 class="label">Income Entries Per Month</h3>
+      <canvas id="entryBarChart"></canvas>
+    </div>
+  </div>
+</div>
+
+
+<section class="expense-analysis-container">
+  <h3 class="expence-heading">Expense Analytics</h3>
+
+  <!-- Cards Section -->
+  <div class="expense-cards">
+    <!-- JavaScript will inject cards here -->
+  </div>
+
+  <!-- Charts Section -->
+  <div class="expence-charts-row">
+    <div class="expence-chart-container">
+      <h3 class="text-md font-medium mb-2">Category-wise Spending</h3>
+      <canvas id="categoryPieChart"></canvas>
+    </div>
+
+    {% comment %} <div class="expence-chart-container">
+      <h3 class="text-md font-medium mb-2">Monthly Trends</h3>
+      <canvas id="monthlyBarChart"></canvas>
+    </div> {% endcomment %}
+
+    <div class="expence-chart-container">
+      <h3 class="text-md font-medium mb-2">Weekday Pattern</h3>
+      <canvas id="weekdayChart"></canvas>
+    </div>
+    <div class="expence-chart-container">
+      <h3 class="text-md font-medium mb-2">Day of Month Pattern</h3>
+      <canvas id="domChart"></canvas>
+    </div>
+  </div>
+  
+</section>
+
+
+
+
+
+<div id="combined-analysis-dashboard" class="combined-analysis-dashboard">
+
+  <h2 class="combined-analysis-title">Combined Financial Analysis</h2>
+
+  <!-- Total Income vs Total Expense -->
+  <div class="combined-analysis-summary">
+    <div id="total-income-box" class="combined-analysis-box total-income-box">
+      <h3 class="label">Total Income</h3>
+      <p id="total-income" class="value-income">₹0</p>
+    </div>
+    <div id="total-expense-box" class="combined-analysis-box total-expense-box">
+      <h3 class="label">Total Expense</h3>
+      <p id="total-expense" class="value-expence">₹0</p>
+    </div>
+    <!-- Income to Expense Ratio -->
+    <div id="income-expense-ratio-section" class="combined-analysis-box income-expense-ratio-section">
+      <h3 class="label">Income to Expense Ratio</h3>
+      <p id="income-expense-ratio" class="value-ratio">0</p>
+    </div>
+    <!-- Budget Accuracy Score -->
+    <div class="combined-analysis-box budget-accuracy-section">
+      <h3 class="label">Budget Accuracy Score</h3>
+      <p id="budget-accuracy-score" class="value">0%</p>
+    </div>
+  </div>
+
+  <div class="combined-charts-row">
+    <!-- Ideal vs Actual Spend-Save-Invest Ratio -->
+    <div class="combined-chart-container">
+      <h3>Ideal vs Actual Spend-Save-Invest Ratio</h3>
+      <canvas id="spendSaveInvestChart"></canvas>
+    </div>
+    <!-- Budget vs Actual Expense (Category-wise) Bar Chart -->
+    <div class="combined-chart-container">
+      <h3>Budget vs Actual Expense (Category-wise)</h3>
+      <canvas id="budgetActualChart"></canvas>
+    </div>
+    <!-- Monthly Cash Flow Chart -->
+    <div class="combined-chart-container">
+      <h3>Monthly Cash Flow (Income vs Expense)</h3>
+      <canvas id="monthlyCashFlowChart"></canvas>
+    </div>  
+  </div>
+</div>
+
+<div style="text-align: right;">
+  <a href="{% url 'report' %}" class="download-report-link">
+    <span class="icon">📥</span> <span class="text">Click here to Download Report</span>
+  </a>
+</div>
+
+
+
+
+<!-- Chart.js CDN (only once) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Tumhari main dashboard JS -->
+<script src="{% static 'js/dashboard.js' %}"></script>
+
+<!-- Tumhari income analysis JS -->
+<script src="{% static 'js/income_analytics.js' %}"></script>
+
+<!-- ye js expence Analytics ki hai  -->
+<script src="{% static 'js/expense_analyticsss.js' %}"></script>
+
+<script src="{% static 'js/combined-analyticsss.js' %}"></script>
+
+
+{% endblock %}

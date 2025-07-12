@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Personal Finance Management delete account{% endblock %}
+{% block header %}Settings{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/delete_accounts.css' %}" />
+<style>
+    .otp-input-container {
+        display: none; /* Initially hidden */
+        margin-top: 20px;
+        padding: 15px;
+        border: 1px solid #66767e;
+        border-radius: 5px;
+        background-color: #1c1f24;
+        text-align: center;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .otp-input-container:focus-within {
+        border-color: #d9534f;
+        box-shadow: 0 0 8px #c9302c;
+    }
+
+    .otp-input-container label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #ffffff; /* Corrected from text-color */
+    }
+
+    .otp-input-container input[type="text"] {
+        padding: 10px;
+        background-color: #1a2634;
+        border: 1px solid #66767e;
+        color: #ffffff;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        width: 80%;
+        max-width: 300px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .otp-input-container input[type="text"]:focus {
+        border-color: #d9534f;
+        box-shadow: 0 0 8px #c9302c;
+        outline: none;
+    }
+
+    .otp-actions {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .otp-actions button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .otp-actions .verify-otp-button {
+        background-color: #f44336;
+        color: white;
+        transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    }
+    
+    .otp-actions .verify-otp-button:hover {
+        background-color: #d32f2f; /* Slightly darker red on hover */
+    }
+    
+    .otp-actions .cancel-otp-button {
+        background-color: #5cb85c;
+        color: white;
+        transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    }
+    
+    .otp-actions .cancel-otp-button:hover {
+        background-color: #4cae4c; /* Slightly darker green on hover */
+    }
+    
+    .form-message.error {
+        color: red;
+        margin-top: 10px;
+    }
+
+    .form-message.success {
+        color: green;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="delete-account-container">
+    <h3>Delete Your Account</h3>
+    <div id="formMessage" class="form-message"></div>
+
+    <form id="deleteAccountForm" class="delete-account-form" method="post" action="{% url 'delete_account' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="confirmText"><strong>⚠️ Type "DELETE" to Confirm</strong></label>
+            <input
+                type="text"
+                id="confirmText"
+                name="confirm_text"
+                required
+                placeholder='Type "DELETE" to confirm'
+            />
+            <small class="field-info">
+                <ul>
+                    <li>📝 This action is irreversible.</li>
+                    <li>📝 All your data, preferences, and history will be permanently deleted.</li>
+                    <li>📝 Type <strong>DELETE</strong> (in all caps) to confirm you understand the consequences.</li>
+                    <li>📝 If you're unsure, consider backing up your data first.</li>
+                </ul>
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label for="accountPassword"><strong>🔒 Confirm Your Password</strong></label>
+            <input
+                type="password"
+                id="accountPassword"
+                name="password"
+                required
+                placeholder="Enter your password to confirm"
+            />
+            <small class="field-info">
+                <ul>
+                    <li>📝 We need to verify your identity before deletion.</li>
+                    <li>📝 This ensures only you can delete your account.</li>
+                </ul>
+            </small>
+        </div>
+
+
+        <div class="form-group">
+            <label id="checkboxLabel" style="display: flex; align-items: center; cursor: pointer;">
+                <input
+                    type="checkbox"
+                    id="confirmCheckbox"
+                    name="confirm_checkbox"
+                    style="margin-right: 8px;"
+                    required
+                />
+                I understand the consequences and want to proceed with account deletion.
+            </label>
+        </div>
+
+        <div class="buttons-container">
+          <button type="button" id="requestOtpButton" class="delete-account-button">Proceed to delete account permanently</button>
+          <a href="{% url 'setting_view' %}" class="change-password-button" type="button">Go Back to Settings</a>
+        </div>
+        
+    </form>
+
+    <div id="otpInputContainer" class="otp-input-container">
+        <label for="otp">Enter OTP sent to your email:</label>
+        <input type="text" id="otp" name="otp" required placeholder="Enter OTP">
+        <div class="otp-actions">
+            <button type="button" id="verifyOtpButton" class="verify-otp-button">Verify And Delete Account</button>
+            <button type="button" id="cancelOtpButton" class="cancel-otp-button">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const deleteAccountForm = document.getElementById('deleteAccountForm');
+    const requestOtpButton = document.getElementById('requestOtpButton');
+    const otpInputContainer = document.getElementById('otpInputContainer');
+    const verifyOtpButton = document.getElementById('verifyOtpButton');
+    const cancelOtpButton = document.getElementById('cancelOtpButton');
+    const formMessage = document.getElementById('formMessage');
+
+    requestOtpButton.addEventListener('click', function() {
+        const confirmText = document.getElementById('confirmText').value;
+        const password = document.getElementById('accountPassword').value;
+        const confirmCheckbox = document.getElementById('confirmCheckbox').checked;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        if (confirmText !== 'DELETE') {
+            formMessage.className = 'form-message error';
+            formMessage.textContent = 'You must type DELETE exactly to confirm.';
+            return;
+        }
+
+        if (!confirmCheckbox) {
+            formMessage.className = 'form-message error';
+            formMessage.textContent = 'You must confirm by checking the box.';
+            return;
+        }
+
+        if (!password) {
+            formMessage.className = 'form-message error';
+            formMessage.textContent = 'Please enter your password to confirm.';
+            return;
+        }
+
+        // Send request to get OTP
+        fetch("{% url 'request_delete_otp' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': csrfToken,
+            },
+            body: new URLSearchParams({
+                'password': password,
+                'confirm_text': confirmText,
+                'confirm_checkbox': confirmCheckbox,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                deleteAccountForm.style.display = 'none';
+                otpInputContainer.style.display = 'block';
+                formMessage.className = 'form-message success';
+                formMessage.textContent = 'OTP sent to your registered email address.';
+            } else {
+                formMessage.className = 'form-message error';
+                formMessage.textContent = data.message;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            formMessage.className = 'form-message error';
+            formMessage.textContent = 'An error occurred while requesting OTP.';
+        });
+    });
+
+    cancelOtpButton.addEventListener('click', function() {
+        otpInputContainer.style.display = 'none';
+        deleteAccountForm.style.display = 'block';
+        formMessage.textContent = '';
+    });
+
+    verifyOtpButton.addEventListener('click', function() {
+        const otp = document.getElementById('otp').value;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch("{% url 'verify_delete_otp' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': csrfToken,
+            },
+            body: new URLSearchParams({
+                'otp': otp,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                formMessage.className = 'form-message success';
+                formMessage.textContent = 'Account deletion initiated successfully. You will be logged out.';
+                setTimeout(function() {
+                    window.location.href = "{% url 'home' %}"; // Redirect after successful deletion
+                }, 2000);
+            } else {
+                formMessage.className = 'form-message error';
+                formMessage.textContent = data.message;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            formMessage.className = 'form-message error';
+            formMessage.textContent = 'An error occurred while verifying OTP.';
+        });
+    });
+</script>
+{% endblock %}

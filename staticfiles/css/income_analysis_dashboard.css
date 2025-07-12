@@ -1,0 +1,139 @@
+/* Income Analysis Section Container */
+.income-analysis-container {
+  display: block;
+  max-width: 100%;
+  margin: 20px auto;
+  padding: 30px;
+  background-color: #1a2634;
+  border: 1px solid #66767e;
+  border-radius: 12px;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+  width: auto;
+  /* Optional max-width to limit container on big screens */
+  max-width: 100%;
+  /* Add a subtle transition for smooth border/shadow changes */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for the main income analysis container (Green) */
+.income-analysis-container:hover {
+  border-color: #218926; /* Green border on hover */
+  box-shadow: 0 0 10px rgba(33, 137, 38, 0.6); /* Green glow */
+  outline: none; /* Remove default outline */
+}
+
+/* Heading */
+.section-heading {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #218926; /* Already green */
+  margin-bottom: 30px;
+}
+
+/* Card wrapper */
+.income-cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+/* Single Card */
+.income-card {
+  background: #1c1f24;
+  border-radius: 12px;
+  padding: 22px 26px;
+  min-width: 180px;
+  max-width: 200px;
+  text-align: center;
+  transition: all 0.3s ease; /* Keep this for individual card lift effect */
+  border: 1px solid #66767e;
+  box-sizing: border-box;
+}
+
+.income-card:hover {
+  transform: translateY(-5px); /* Keep the lift effect for cards */
+  border-color: #218926; /* Green border on hover */
+  box-shadow: 0 0 8px rgba(33, 137, 38, 0.44); /* Green glow */
+  outline: none;
+}
+
+.income-card .label {
+  font-size: 0.9rem;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.income-card .value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #218926; /* Already green */
+}
+
+/* Charts container */
+.charts-row {
+  color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Individual Chart */
+.chart-container {
+  flex: 1 1 48%;
+  background: #1c1f24;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #66767e;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.3s ease; /* Keep this for individual chart lift effect */
+}
+
+/* Corrected hover for individual chart container (Green) */
+.chart-container:hover {
+  transform: translateY(-5px); /* Keep the lift effect for charts */
+  border-color: #218926; /* Green border on hover */
+  box-shadow: 0 0 8px rgba(33, 137, 38, 0.44); /* Green glow */
+  outline: none;
+}
+
+/* Chart Canvas Responsive */
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 350px;
+  object-fit: contain;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .charts-row {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .chart-container {
+    flex: 1 1 100%;
+    margin-bottom: 0;
+    min-height: 250px;
+  }
+
+  .income-cards {
+    justify-content: center;
+  }
+}

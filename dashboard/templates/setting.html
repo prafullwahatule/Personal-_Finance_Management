@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}  <!-- ✅ Ensure this is included at the top -->
+
+{% block title %}Personal Finance Management - Update Profile{% endblock %}
+{% block header %}Settings{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/main_setting.css' %}" />
+<div class="update-details-form">
+  <div id="setting-message" class="setting-message" style="display:none; margin-bottom:10px;"></div>
+  <h3>Update Your Profile</h3>
+  <form action="{% url 'setting_view' %}" method="POST">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="email"><strong>👉 Email</strong></label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        placeholder="Enter your email address"
+        value="{{ user.email }}"
+      />
+      <small class="field-info">
+        <ul>
+          <li>📝 Provide an active and frequently checked email address.</li>
+          <li>📝 This will be your primary communication channel for receiving important updates, alerts, transaction confirmations, and personalized recommendations.</li>
+          <li>📝 Make sure it's accurate to avoid missing key notifications.</li>
+          <li>📝 Use a professional email ID.</li>
+          <li>📝 Check your inbox regularly for our emails.</li>
+          <li>📝 Add our email address to your contacts or whitelist.</li>
+        </ul>
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="mobileNumber"><strong>👉 Mobile Number</strong></label>
+      <input
+        type="tel"
+        id="mobileNumber"
+        name="mobileNumber"
+        required
+        placeholder="Enter your mobile number"
+        pattern="[0-9]{10,15}"
+        value="{{ profile.mobile }}"
+      />
+      <small class="field-info">
+        <ul>
+          <li>📝 Enter a valid mobile number that you have access to at all times.</li>
+          <li>📝 It will be used for two-factor authentication, security alerts, OTPs (one-time passwords), and urgent notifications.</li>
+          <li>📝 Keeping this number up-to-date protects your account from unauthorized access.</li>
+          <li>📝 Preferably use your personal number, not shared.</li>
+          <li>📝 Keep your phone number active to receive SMS codes.</li>
+        </ul>
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="monthlySavings"><strong>👉 Monthly Savings</strong></label>
+      <input
+        type="number"
+        id="monthlySavings"
+        name="monthlySavings"
+        required
+        placeholder="Enter your typical monthly savings"
+        min="0"
+        step="0.01"
+        value="{{ profile.savings }}"
+      />
+      <small class="field-info">
+        <ul>
+          <li>📝 Enter the amount you typically save each month after expenses.</li>
+          <li>📝 This helps us understand your saving capacity and design investment plans that fit your budget and long-term financial goals.</li>
+          <li>📝 Be realistic about your savings to get accurate advice.</li>
+          <li>📝 Include any recurring savings like fixed deposits or SIPs.</li>
+        </ul>
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="existingInvestments"><strong>👉 Existing Investments</strong></label>
+      <input
+        type="number"
+        id="existingInvestments"
+        name="existingInvestments"
+        required
+        placeholder="Enter your typical monthly savings"
+        min="0"
+        step="0.01"
+        value="{{ profile.existing_investments }}"
+      />
+      <small class="field-info">
+        <ul>
+          <li>📝 Enter the approximate total value of your current investments (stocks, mutual funds, bonds, gold, real estate, etc.).</li>
+          <li>📝 This helps analyze your portfolio diversity and avoid overlapping recommendations or excessive risk exposure.</li>
+          <li>📝 Be as accurate as possible.</li>
+        </ul>
+      </small>
+    </div>
+
+
+    <div class="form-group">
+      <label for="riskAppetite"><strong>👉 Risk Appetite</strong></label>
+      <select id="riskAppetite" name="riskAppetite" required>
+        <option value="" disabled {% if not profile.risk_appetite %}selected{% endif %}>Select your risk level</option>
+        <option value="Low"    {% if profile.risk_appetite == "Low"    %}selected{% endif %}>Low</option>
+        <option value="Medium" {% if profile.risk_appetite == "Medium" %}selected{% endif %}>Medium</option>
+        <option value="High"   {% if profile.risk_appetite == "High"   %}selected{% endif %}>High</option>
+      </select>
+      <small class="field-info">
+        <ul>
+          <li>📝 Choose your comfort level with investment risks — Low, Medium, or High.</li>
+          <li>📝 This preference guides us to suggest investment options that match your willingness to tolerate market fluctuations and potential losses, balancing growth and safety.</li>
+          <li>📝 Low risk suits conservative investors focused on capital preservation.</li>
+          <li>📝 Medium risk balances growth with moderate volatility.</li>
+          <li>📝 High risk targets aggressive growth with higher volatility.</li>
+        </ul>
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="investmentGoals"><strong>👉 Investment Goals</strong></label>
+      <select id="investmentGoals" name="investmentGoals" required>
+        <option value="" disabled {% if not profile.investment_goals %}selected{% endif %}>Select your main financial goal</option>
+        {% for val, text in profile.INVESTMENT_GOALS_CHOICES %}
+          <option value="{{ val }}" {% if profile.investment_goals == val %}selected{% endif %}>{{ text }}</option>
+        {% endfor %}
+      </select>
+      <small class="field-info">
+        <ul>
+          <li>📝 Select your main financial objectives.</li>
+          <li>📝 Clearly defining your goals helps us prioritize investment strategies and timelines.</li>
+          <li>📝 Set realistic timelines for each goal.</li>
+          <li>📝 Prioritize goals to allocate funds accordingly.</li>
+        </ul>
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label><strong>👉 Preferred Investment Type</strong></label>
+      <div>
+        {% for option in investment_options %}
+          <input type="checkbox"
+                 id="invest{{ forloop.counter }}"
+                 name="preferredInvestmentType"
+                 value="{{ option }}"
+                 {% if option in selected_options %}checked{% endif %}>
+          <label for="invest{{ forloop.counter }}">{{ option }}</label><br />
+        {% endfor %}
+      </div>
+      <small class="field-info">
+        <ul>
+          <li>📝 Check all investment types you’re interested in.</li>
+          <li>📝 This ensures your portfolio aligns with your interests, knowledge, and risk preference.</li>
+          <li>📝 Consider diversification to minimize risk.</li>
+          <li>📝 Choose options that match your knowledge and comfort.</li>
+        </ul>
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label><strong>👉 Final Tip</strong></label>
+      <small class="field-info">
+        <ul>
+          <li>📝 Review all your entries carefully before submitting.</li>
+          <li>📝 Accurate and complete information directly influences the quality of your personalized dashboard, recommendations, reports, and overall financial health monitoring.</li>
+          <li>📝 Take your time to avoid mistakes.</li>
+          <li>📝 Contact support if you need assistance.</li>
+        </ul>
+      </small>
+    </div>
+
+    <button type="submit" class="update-profile-button">Update Profile</button>
+    <a href="{% url 'manage_password' %}" class="manage-account-button" type="button">Manage Account</a>
+  </form>
+</div>
+
+
+
+<script src="{% static 'js/main_settings.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,321 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block title %}Personal Finance Management - expense tracker{% endblock %} 
+{% block header %}Expense Tracker{% endblock %} 
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/expense_trackerrrr.css' %}" />
+
+<div class="expense-container">
+  <div id="expense-message" class="expense-alert" style="display:none; margin-bottom:10px;"></div>
+  <!-- Charts -->
+  <div class="chart-container">
+    <div class="chart-box">
+      <h3>📈 Monthly Expense Trend</h3>
+      <canvas id="lineChart"
+              data-labels='{{ months|safe }}'
+              data-data='{{ monthly_totals|safe }}'></canvas>
+    </div>
+
+    <div class="chart-box small-chart">
+      <h3>🥧 Category-wise Expense Distribution</h3>
+      <div class="pie-chart-container">
+        <canvas id="pieChart"
+                data-labels='{{ categories|safe }}'
+                data-data='{{ category_totals|safe }}'></canvas>
+        <div id="categoryLabels" class="category-labels">
+          <!-- Labels inserted dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters + Buttons -->
+  <div class="filter-section-container">
+    <form method="get" action="{% url 'expense_tracker' %}" class="filter-section">
+      <div class="filter-controls">
+        <label for="category-filter">
+          <i class="fas fa-filter" style="margin-right: 6px; color: #4CAF50;"></i> Filter
+        </label>
+        <select name="category" id="category-filter" onchange="this.form.submit()">
+          <option value="">All</option>
+          <option value="Food" {% if category_filter == 'Food' %}selected{% endif %}>Food</option>
+          <option value="Travel" {% if category_filter == 'Travel' %}selected{% endif %}>Travel</option>
+          <option value="Rent" {% if category_filter == 'Rent' %}selected{% endif %}>Rent</option>
+          <option value="Utilities" {% if category_filter == 'Utilities' %}selected{% endif %}>Utilities</option>
+          <option value="Shopping" {% if category_filter == 'Shopping' %}selected{% endif %}>Shopping</option>
+          <option value="Other" {% if category_filter == 'Other' %}selected{% endif %}>Other</option>
+        </select>
+
+        <label for="filter-date">Date:</label>
+        <input type="date" name="date" id="filter-date" value="{{ date_filter }}" onchange="this.form.submit()">
+      </div>
+
+      <div class="add-button-container">
+        <a href="{% url 'manage_budget_limits' %}" class="limit-btn">⚙️ Manage Budget</a>
+        <a href="{% url 'add_expense' %}" class="add-btn">➕ Add Expense</a>
+      </div>
+    </form>
+  </div>
+
+  <!-- Expense Table -->
+  <div class="expence-table-section">
+    <table class="expense-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Category</th>
+          <th>Amount (₹)</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in expenses %}
+        <tr>
+          <td>{{ e.date }}</td>
+          <td>{{ e.time }}</td>
+          <td>{{ e.category }}</td>
+          <td>₹{{ e.amount }}</td>
+          <td>{{ e.description|default:'-' }}</td>
+          <td>
+            <a href="{% url 'delete_expense' expense_id=e.id %}" 
+               class="delete-icon delete-expense" 
+               data-id="{{ e.id }}" 
+               title="Delete">
+              <i class="fas fa-trash-alt"></i>
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" class="text-center">No expenses yet.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5">Total Expenses</td>
+          <td>₹{{ total_expenses }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- Download Report Form -->
+  <div class="download-section">
+    <form method="get" action="{% url 'download_expenses' %}" class="download-form">
+      <label for="start-date">From:</label>
+      <input type="date" name="start_date" id="start-date" required>
+
+      <label for="end-date">To:</label>
+      <input type="date" name="end_date" id="end-date" required>
+
+      <label for="format">Format:</label>
+      <select name="format" id="format" required>
+        <option value="csv">CSV</option>
+        <option value="excel">Excel</option>
+      </select>
+
+      <button type="submit" class="download-btn">
+        <i class="fas fa-download"></i> Download
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Budget Summary -->
+<div class="expense-container">
+  <h3>Budget Summary Overview</h3>
+  <table class="expense-table">
+    <thead class="table-dark">
+      <tr>
+        <th>Category</th>
+        <th>Monthly Limit</th>
+        <th>Yearly Limit</th>
+        <th>Spent (1M)</th>
+        <th>Left (1M)</th>
+        <th>Spent (1Y)</th>
+        <th>Left (1Y)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in budget_data %}
+      <tr>
+        <td>{{ row.category }}</td>
+        <td>₹{{ row.monthly_limit }}</td>
+        <td>₹{{ row.annual_limit }}</td>
+        <td>₹{{ row.monthly_spent }}</td>
+        <td>₹{{ row.monthly_remaining }}</td>
+        <td>₹{{ row.annual_spent }}</td>
+        <td>₹{{ row.annual_remaining }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7" class="text-center">No budget data available.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/expense_tracker.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+<script>
+  // Safely parse and normalize strings
+  const normalize = str => (str && typeof str === 'string') ? str.trim().toLowerCase() : '';
+
+  // Variables from Django context
+  const categoryFilter = "{{ category_filter }}";
+  const categories = {{ categories|safe }};
+  const categoryTotals = {{ category_totals|safe }};
+  const months = {{ months|safe }};
+  const monthlyTotals = {{ monthly_totals|safe }};
+
+  // Updated teal/navy/dark palette (same as earlier CSS)
+  const categoryColorMap = {
+    'food': '#00bfa6',       // Teal
+    'travel': '#1e3a8a',     // Navy Blue
+    'rent': '#256d85',       // Muted Teal/Blue
+    'utilities': '#4b5563',  // Slate Gray
+    'shopping': '#008080',   // Dark Cyan (variation of teal)
+    'other': '#7f8c8d'       // Neutral Gray
+  };
+
+  // Generate colors array with fallback gray
+  const backgroundColors = categories.map(cat => categoryColorMap[normalize(cat)] || '#999999');
+
+  // Label for line chart, dynamic based on filter
+  let lineChartLabel = 'Monthly Expenses';
+  if (categoryFilter) {
+    lineChartLabel += ` (Category: ${categoryFilter})`;
+  }
+
+  // Config for Line Chart (Monthly Expenses)
+  const lineCtx = document.getElementById('lineChart').getContext('2d');
+  const lineChart = new Chart(lineCtx, {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [{
+        label: lineChartLabel,
+        data: monthlyTotals,
+        backgroundColor: 'rgba(0, 191, 166, 0.3)',  // teal translucent fill
+        borderColor: '#00bfa6',  // teal border
+        borderWidth: 3,
+        tension: 0.3,  // smooth curve
+        fill: true,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        pointBackgroundColor: '#004d40',  // darker teal points
+        cubicInterpolationMode: 'monotone',
+      }]
+    },
+    options: {
+      responsive: true,
+      interaction: {
+        mode: 'nearest',
+        intersect: false,
+      },
+      plugins: {
+        legend: {
+          labels: {
+            color: '#e0e7ff',  // light text for legend
+            font: { size: 14, weight: 'bold' }
+          }
+        },
+        tooltip: {
+          enabled: true,
+          backgroundColor: '#1e293b',
+          titleColor: '#00bfa6',
+          bodyColor: '#f3f4f6',
+          cornerRadius: 6,
+          padding: 10,
+          displayColors: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: '#374151'  // subtle grid lines
+          },
+          ticks: {
+            color: '#cbd5e1'
+          }
+        },
+        x: {
+          grid: {
+            color: '#374151'
+          },
+          ticks: {
+            color: '#cbd5e1'
+          }
+        }
+      }
+    }
+  });
+
+  // Config for Pie Chart (Category Breakdown)
+  const pieCtx = document.getElementById('pieChart').getContext('2d');
+  const pieChart = new Chart(pieCtx, {
+    type: 'pie',
+    data: {
+      labels: categories,
+      datasets: [{
+        label: 'Category Breakdown',
+        data: categoryTotals,
+        backgroundColor: backgroundColors,
+        borderColor: '#1f2937', // match background for subtle border
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            color: '#f3f4f6',
+            font: { size: 12 }
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const total = ctx.dataset.data.reduce((a, v) => a + v, 0);
+              const percent = ((ctx.raw / total) * 100).toFixed(1);
+              return `${ctx.label}: ${ctx.raw} (${percent}%)`;
+            }
+          },
+          backgroundColor: '#1e293b',
+          titleColor: '#00bfa6',
+          bodyColor: '#f3f4f6',
+          cornerRadius: 6,
+          padding: 8
+        },
+        datalabels: {
+          display: true,
+          color: '#f3f4f6',
+          font: { weight: 'bold', size: 10 },
+          formatter: (value, ctx) => {
+            const total = ctx.dataset.data.reduce((acc, val) => acc + val, 0);
+            const percent = ((value / total) * 100).toFixed(1);
+            return `${percent}%`;
+          },
+          anchor: 'center',
+          align: 'center',
+          offset: 0,
+        }
+      }
+    },
+    plugins: [ChartDataLabels] // make sure datalabels plugin is loaded
+  });
+</script>
+
+
+
+{% endblock %}

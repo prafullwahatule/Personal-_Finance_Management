@@ -1,0 +1,147 @@
+/* -------------------------------------
+   ✨ Features List Section
+-------------------------------------- */
+.features-list {
+  background-color: #1a2634; /* Dark background */
+  border: 1px solid #66767e;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  color: #e2e8f0;
+  margin-bottom: 2rem;
+}
+
+.features-list h3 {
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.features-list ul {
+  padding-left: 1.5rem;
+  color: #0284c7; /* Blue list text */
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.features-list li {
+  margin-bottom: 0.8rem;
+}
+
+.features-list strong {
+  color: #007bff; /* Highlighted text */
+}
+
+.features-list p {
+  color: #94a3b8; /* Faded info text */
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+
+/* -------------------------------------
+   📄 Report Generator Section
+-------------------------------------- */
+.report-container {
+  background-color: #1c1f24; /* Card background */
+  border: 1px solid #66767e;
+  width: fit-content;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-top: 2rem;
+}
+
+.report-container:focus-within {
+  border-color: #007bff;
+  box-shadow: 0 0 8px #007bff44;
+}
+
+.report-title {
+  color: #ffffff;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+
+/* -------------------------------------
+   📝 Inline Form Section (Duration + Format + Button)
+-------------------------------------- */
+.form-section-inline {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.form-section-inline label {
+  color: #fefefe;
+  font-weight: 600;
+  margin-right: 0.3rem;
+}
+
+.form-section-inline select {
+  background-color: #1a2634;
+  border: 1px solid #66767e;
+  color: #007bff;
+  padding: 0.4rem 1rem;  /* Reduced right padding to avoid centering effect */
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+  text-align: left; /* ✅ Ensures text is left-aligned */
+  text-align-last: left; /* ✅ For consistent alignment in some browsers like Firefox */
+}
+
+
+.form-section-inline select:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 5px rgba(14, 165, 233, 0.4);
+}
+
+
+/* -------------------------------------
+   ⬇️ Download Button Styling
+-------------------------------------- */
+#download-btn {
+  background-color: #2e99c7; /* Light blue */
+  color: white;
+  font-weight: 700;
+  border: none;
+  padding: 0.6rem 1.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+#download-btn:hover {
+  background-color: #007bff; /* Hover darker blue */
+  box-shadow: 0 0 8px #007bff44;
+}
+
+
+/* -------------------------------------
+   📱 Responsive Design (Mobile First)
+-------------------------------------- */
+@media (max-width: 768px) {
+  .features-list,
+  .report-container {
+    padding: 1rem;
+  }
+
+  .form-section-inline {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-section-inline label {
+    margin-bottom: 0.2rem;
+  }
+
+  #download-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

@@ -1,0 +1,119 @@
+.income-analysis-container {
+  display: block;
+  max-width: 100%;
+  margin: 20px auto;
+  padding: 30px;
+  background-color: rgb(59, 59, 59);
+  border: 1px solid #000000;
+  border-radius: 12px;
+  box-sizing: border-box; /* Important for padding */
+  font-family: 'Segoe UI', sans-serif;
+  width: auto;
+  /* Optional max-width to limit container on big screens */
+  max-width: 100%;
+}
+
+/* Heading */
+.section-heading {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #218926;
+  margin-bottom: 30px;
+}
+
+/* Card wrapper */
+.income-cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+/* Single Card */
+.income-card {
+  background: #333;
+  border-radius: 12px;
+  padding: 22px 26px;
+  min-width: 180px;
+  max-width: 200px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 1px solid #000000;
+  box-sizing: border-box;
+}
+
+.income-card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
+}
+
+.income-card .label {
+  font-size: 0.9rem;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.income-card .value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #218926;
+}
+
+/* Charts container */
+.charts-row {
+  color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;    /* full width */
+  box-sizing: border-box;
+}
+
+/* Individual Chart */
+.chart-container {
+  flex: 1 1 48%;
+  background: #333;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #000000;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  /* Min height to prevent collapsing */
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Chart Canvas Responsive */
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;  /* fill container height */
+  max-height: 350px;        /* optional max height */
+  object-fit: contain;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .charts-row {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .chart-container {
+    flex: 1 1 100%;
+    margin-bottom: 0;
+    min-height: 250px;
+  }
+
+  .income-cards {
+    justify-content: center;
+  }
+}

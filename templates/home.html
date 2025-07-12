@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Personal Finance Management</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="/static/css/home-style.css" />
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm">
+      <div class="container d-flex justify-content-between">
+        <!-- Brand Logo (Left Side) -->
+        <a class="navbar-brand fw-bold" href="#">WealthWise</a>
+
+        <!-- Navbar Toggle Button (For Mobile) -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links & Sign Up Button (Right Side) -->
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="#features">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#blogs">Blogs</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Contact</a>
+            </li>
+          </ul>
+          <!-- Sign Up Button -->
+          <div class="d-flex justify-content-end">
+            <a
+              href="{% url 'login' %}"
+              class="btn btn-primary px-3 py-1 fw-bold shadow-sm rounded-5"
+            >
+              <i class="bi bi-person-circle me-2"></i> Sign In/Sign Up
+            </a>
+
+          </div>
+          
+        </div>
+      </div>
+    </nav>
+
+{% comment %} 
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg rounded-4">
+      <div class="modal-header text-center">
+        <h5 class="modal-title w-100" id="loginModalLabel">Sign In</h5>
+      </div>
+      <div class="modal-body p-4">
+        <!-- Display Messages Here -->
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <!--comment %} login form -->
+        <form action="{% url 'login' %}" method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="login-email" class="form-label">Email address</label>
+            <input type="email" class="form-control rounded-3" name="email" id="login-email" placeholder="Enter your email" required>
+          </div>
+          <div class="mb-3">
+            <label for="login-password" class="form-label">Password</label>
+            <input type="password" class="form-control rounded-3" name="password" id="login-password" placeholder="Enter your password" required>
+          </div>
+          <button type="submit" class="btn btn-primary w-100 rounded-3">Sign In</button>
+        </form>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <p>Don't have an account? <a href="#" id="openRegisterModal">Sign Up</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+<!-- Single-Page Registration Form -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content shadow-lg rounded-4">
+        <div class="modal-header text-center">
+          <h5 class="modal-title w-100" id="registerModalLabel">Create an Account</h5>
+        </div>
+        <div class="modal-body">
+          
+          <form action="{% url 'register' %}" method="POST">
+            {% csrf_token %}
+  
+            <h5>Personal Details</h5>
+            <div class="mb-3"><label class="form-label">Full Name</label><input type="text" class="form-control" name="full_name" required></div>
+            <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" name="email" required></div>
+            <div class="mb-3"><label class="form-label">Password</label><input type="password" class="form-control" name="password" required></div>
+            <div class="mb-3"><label class="form-label">Mobile Number</label><input type="text" class="form-control" name="mobile" required></div>
+            <div class="mb-3"><label class="form-label">Date of Birth</label><input type="date" class="form-control" name="dob" required></div>
+            <div class="mb-3"><label class="form-label">Gender</label>
+              <select class="form-control" name="gender" required>
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+  
+            <h5>Financial Details</h5>
+            <div class="mb-3"><label class="form-label">Savings Per Month</label><input type="text" class="form-control" name="savings" required></div>
+            <div class="mb-3"><label class="form-label">Existing Investments</label><input type="text" class="form-control" name="existing_investments"></div>
+  
+            <h5>Investment Preferences</h5>
+            <div class="mb-3"><label class="form-label">Risk Appetite</label>
+              <select class="form-control" name="risk_appetite" required>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Investment Goals</label>
+              <select class="form-control" name="investment_goals" required>
+                <option value="">Select</option>
+                <option value="Short Term">Short Term</option>
+                <option value="Long Term">Long Term</option>
+                <option value="Retirement">Retirement</option>
+                <option value="Wealth Growth">Wealth Growth</option>
+                <option value="Tax Saving">Tax Saving</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Preferred Investment Type</label>
+              <div class="form-check"><input class="form-check-input" type="checkbox" name="preferred_investments" value="Stocks"> Stocks</div>
+              <div class="form-check"><input class="form-check-input" type="checkbox" name="preferred_investments" value="SIPs"> SIPs</div>
+              <div class="form-check"><input class="form-check-input" type="checkbox" name="preferred_investments" value="Mutual Funds"> Mutual Funds</div>
+              <div class="form-check"><input class="form-check-input" type="checkbox" name="preferred_investments" value="Gold"> Gold</div>
+              <div class="form-check"><input class="form-check-input" type="checkbox" name="preferred_investments" value="Real Estate"> Real Estate</div>
+            </div>
+  
+            <button type="submit" class="btn btn-success w-100">Register</button>
+  
+            <div class="modal-footer d-flex justify-content-center">
+              <p>Already have an account? <a href="#" id="openLoginModal">Login</a></p>
+            </div>
+  
+          </form>
+        </div>
+      </div>
+    </div>
+  </div> {% endcomment %}
+  
+
+
+
+    <!-- Hero Section -->
+    <section class="hero d-flex align-items-center text-center">
+      <div class="container">
+        <img
+            src="/static/images/hero-2.jpg"
+            class="hero-img mb-4"
+            alt="hero"
+          />
+        <img
+            src="/static/images/hero-3.jpg"
+            class="hero-img mb-4"
+            alt="hero"
+          />
+        <img
+            src="/static/images/hero-4.jpg"
+            class="hero-img mb-4"
+            alt="hero"
+          />
+        <img
+            src="/static/images/hero-5.jpg"
+            class="hero-img mb-4"
+            alt="hero"
+          />
+        <img
+            src="/static/images/hero-7.jpg"
+            class="hero-img mb-4"
+            alt="hero"
+          />
+        <img
+            src="/static/images/hero-8.jpg"
+            class="hero-img mb-4"
+            alt="hero"
+          />
+        <h1 class="display-4 fw-bold animate-fade-in">
+          Master Your Finances with Confidence
+          <p class="lead text-light animate-slide-up">
+            Take charge of your financial future—Track, Invest, and Grow your
+            wealth effortlessly.
+          </p>
+        </h1>
+  
+        <!-- Navigation Arrows -->
+          <button class="arrow left-arrow" onclick="prevImage()">&#10094;</button>
+          <button class="arrow right-arrow" onclick="nextImage()">&#10095;</button>
+        <a
+          href="{% url 'sign_up' %}"
+          class="btn btn-warning btn-lg fw-bold mt-3 animate-bounce"
+          >🚀 Get Started</a
+        >
+      </div>
+    </section>
+
+    <!-- Importance of Finance Section -->
+    <section class="importance-finance py-5">
+      <div class="container">
+        <div class="finance-box p-5 rounded shadow-lg text-center text-white">
+          <h2 class="mb-4 fw-bold">💰 The Power of Smart Financial Planning</h2>
+          <p class="lead">
+            Secure your future, grow your wealth, and live stress-free with the
+            right financial decisions.
+          </p>
+
+          <div class="row mt-5">
+            <div class="col-md-6 col-lg-3">
+              <div class="finance-card p-4 rounded text-center">
+                {% comment %}
+                <img
+                  src="/static/images/blogs1.aif"
+                  alt="Financial Freedom"
+                  class="finance-icon mb-3"
+                />
+                {% endcomment %}
+                <h4>Financial Freedom</h4>
+                <p>
+                  Take control of your wealth and live life on your own terms
+                  with the right financial strategy.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="finance-card p-4 rounded text-center">
+                {% comment %}
+                <img
+                  src="/static/images/stress-free.png"
+                  alt="Stress-Free Future"
+                  class="finance-icon mb-3"
+                />
+                {% endcomment %}
+                <h4>Stress-Free Future</h4>
+                <p>
+                  Say goodbye to financial stress and embrace a future of
+                  confidence and stability.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mt-4 mt-md-0">
+              <div class="finance-card p-4 rounded text-center">
+                {% comment %}
+                <img
+                  src="/static/images/investments.png"
+                  alt="Smart Investments"
+                  class="finance-icon mb-3"
+                />
+                {% endcomment %}
+                <h4>Smart Investments</h4>
+                <p>
+                  Grow your money wisely with data-driven investment decisions.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mt-4 mt-md-0">
+              <div class="finance-card p-4 rounded text-center">
+                {% comment %}
+                <img
+                  src="/static/images/emergency.png"
+                  alt="Emergency Preparedness"
+                  class="finance-icon mb-3"
+                />
+                {% endcomment %}
+                <h4>Preparedness</h4>
+                <p>
+                  Be ready for unexpected challenges with a strong financial
+                  safety net.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="container my-5 text-center" id="features">
+      <h2 class="mb-4">Why Choose Our Platform?</h2>
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col feature-box p-4">
+          <img
+            src="/static/images/expence-tracker.jpg"
+            class="feature-img mx-auto d-block"
+            alt="Expense Tracking"
+          />
+          <h3>Expense Tracking</h3>
+          <p>Monitor and categorize your spending to stay within budget.</p>
+        </div>
+        <div class="col feature-box p-4">
+          <img
+            src="/static/images/smart-investment.jpg"
+            class="feature-img mx-auto d-block"
+            alt="Investment Insights"
+          />
+          <h3>Investment Insights</h3>
+          <p>Get the best investment recommendations based on your profile.</p>
+        </div>
+        <div class="col feature-box p-4">
+          <img
+            src="/static/images/live-market.jpg"
+            class="feature-img mx-auto d-block"
+            alt="Live Market Updates"
+          />
+          <h3>Live Market Updates</h3>
+          <p>Stay ahead with real-time stock and gold price alerts.</p>
+        </div>
+        <div class="col feature-box p-4">
+          <img
+            src="/static/images/mutual-funds.jpg"
+            class="feature-img mx-auto d-block"
+            alt="Mutual Fund Suggestions"
+          />
+          <h3>Mutual Fund Suggestions</h3>
+          <p>
+            Compare and choose the best mutual funds suited to your financial
+            goals.
+          </p>
+        </div>
+        <div class="col feature-box p-4">
+          <img
+            src="/static/images/smart-advice.jpg"
+            class="feature-img mx-auto d-block"
+            alt="Financial Advice"
+          />
+          <h3>Financial Advice</h3>
+          <p>
+            Get personalized financial planning based on your income and
+            expenses.
+          </p>
+        </div>
+        <div class="col feature-box p-4">
+          <img
+            src="/static/images/finacial-report.jpg"
+            class="feature-img mx-auto d-block"
+            alt="Data Export"
+          />
+          <h3>Data Export</h3>
+          <p>Download your financial reports in PDF, Excel, or Word format.</p>
+        </div>
+      </div>
+    </section>
+
+
+<!-- Blogs Section -->
+<section class="blogs-section py-5 bg-light" id="blogs">
+  <div class="container">
+    <h2 class="text-center mb-4">Latest Financial Blogs</h2>
+    <p class="text-center text-muted mb-5">
+      Stay updated with expert insights, smart strategies, and valuable
+      financial tips to grow your wealth.
+    </p>
+    <div class="row g-4" id="news-container">
+      <!-- News cards will be injected here dynamically -->
+    </div>
+  </div>
+</section>
+
+    <!-- Vision Section -->
+    <section class="vision-section text-center py-5 bg-light">
+      <div class="container">
+        <h2 class="mb-4">🚀 Our Vision</h2>
+        <div class="row align-items-center">
+          <!-- Vision Image -->
+          <div class="col-md-6">
+            <img
+              src="/static/images/freedam.jpg"
+              alt="Our Vision"
+              class="vision-img img-fluid rounded shadow"
+            />
+          </div>
+          <!-- Vision Content -->
+          <div class="col-md-6">
+            <p class="lead fw-normal text-muted">
+              "At <strong>Finance Manager</strong>, our vision is to
+              revolutionize personal finance by providing **intelligent,
+              data-driven insights** and **powerful financial tools**. We strive
+              to make financial management **simpler, smarter, and more
+              accessible** for everyone—regardless of their background.
+            </p>
+            <p class="lead fw-normal text-muted">
+              Our goal is to empower individuals with the **knowledge and
+              resources** they need to **achieve financial freedom, make
+              informed investment choices, and secure a prosperous future**.
+              Through transparency, innovation, and cutting-edge technology, we
+              aim to help you **take control of your financial journey with
+              confidence**."
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="container my-5" id="contact">
+      <h2 class="text-center mb-4">📞 Get in Touch</h2>
+      <p class="text-center">
+        Have any questions? Reach out to us, and our team will assist you
+        promptly.
+      </p>
+
+      <div class="row">
+      <!-- Success/Error Message Box -->
+<div id="popupMessage" class="alert d-none text-center" role="alert"></div>
+
+<!-- Contact Form -->
+<div class="col-md-6">
+  <div class="card shadow p-4">
+    <h4 class="text-center mb-3">Send Us a Message</h4>
+    <form id="contactForm" method="post" action="/contact/">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required />
+      </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label">Phone Number</label>
+        <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required />
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email Address</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required />
+      </div>
+      <div class="mb-3">
+        <label for="subject" class="form-label">Subject</label>
+        <input type="text" class="form-control" id="subject" name="subject" placeholder="Enter subject" required />
+      </div>
+      <div class="mb-3">
+        <label for="message" class="form-label">Message</label>
+        <textarea class="form-control" id="message" rows="4" name="message" placeholder="Type your message..." required></textarea>
+      </div>
+      <button type="submit" class="btn btn-dark w-100">Send Message</button>
+    </form>
+  </div>
+</div>
+
+
+        <!-- Contact Info & Google Map -->
+        <div class="col-md-6">
+          <div class="card shadow p-4">
+            <h4 class="text-center mb-3">📍 Contact Information</h4>
+            <p>
+              🏢 <strong>Address:</strong> 123 Finance Street, Nashik, India
+            </p>
+            <p>📧 <strong>Email:</strong> support@financemanager.com</p>
+            <p>📞 <strong>Phone:</strong> +91 78757 89496</p>
+            <p>
+              ⏰ <strong>Working Hours:</strong> Mon - Fri, 9:00 AM - 6:00 PM
+            </p>
+
+            <!-- Google Map Embed -->
+            <div class="map-container">
+              <iframe
+                src="https://www.google.com/maps?q=Shri%20Eknath%20Towers,%20Amrutdham,%20Nashik&output=embed"
+                width="100%"
+                height="373"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+      <!-- Social Media Links -->
+      <div class="text-center mt-5">
+        <h4>🌍 Follow Us</h4>
+        <div class="social-icons">
+          <a href="https://www.facebook.com" target="_blank" class="me-3">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="https://twitter.com" target="_blank" class="me-3">
+            <i class="bi bi-twitter"></i>
+          </a>
+          <a href="https://www.instagram.com" target="_blank" class="me-3">
+            <i class="bi bi-instagram"></i>
+          </a>
+          <a href="https://www.linkedin.com" target="_blank" class="me-3">
+            <i class="bi bi-linkedin"></i>
+          </a>
+          <a href="https://www.youtube.com" target="_blank" class="me-3">
+            <i class="bi bi-youtube"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <h5>Contact Us</h5>
+            <p>Email: support@financemanagement.com</p>
+            <p>Phone: +91 78757 89496</p>
+          </div>
+          <div class="col-md-3 mb-3">
+            <h5>Quick Links</h5>
+            <div class="footer-links">
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Service</a>
+              <a href="#contact">Contact</a>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <h5>Resources</h5>
+            <div class="footer-links">
+              <a href="#blogs">Blogs</a>
+              <a href="#faq">FAQ</a>
+              <a href="#support">Support</a>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <h5>Follow Us</h5>
+            <div class="social-icons">
+              <a href="https://www.facebook.com" target="_blank" class="me-3">
+                <i class="bi bi-facebook"></i>
+              </a>
+              <a href="https://twitter.com" target="_blank" class="me-3">
+                <i class="bi bi-twitter"></i>
+              </a>
+              <a href="https://www.instagram.com" target="_blank" class="me-3">
+                <i class="bi bi-instagram"></i>
+              </a>
+              <a href="https://www.linkedin.com" target="_blank" class="me-3">
+                <i class="bi bi-linkedin"></i>
+              </a>
+              <a href="https://www.youtube.com" target="_blank" class="me-3">
+                <i class="bi bi-youtube"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <hr class="bg-light" />
+        <p>&copy; 2025 Personal Finance Management. All Rights Reserved.</p>
+      </div>
+    </footer>
+    
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("contactForm");
+      const popup = document.getElementById("popupMessage");
+    
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+    
+        fetch("/contact/", {
+          method: "POST",
+          body: formData,
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            popup.classList.remove("d-none", "alert-danger");
+            popup.classList.add("alert", data.success ? "alert-success" : "alert-danger");
+            popup.innerText = data.message;
+    
+            if (data.success) {
+              form.reset(); // Clear the form
+            }
+    
+            setTimeout(() => popup.classList.add("d-none"), 3000); // Hide popup after 3 seconds
+          })
+          .catch((error) => {
+            popup.classList.remove("d-none");
+            popup.classList.add("alert", "alert-danger");
+            popup.innerText = "An error occurred while sending your message.";
+            setTimeout(() => popup.classList.add("d-none"), 3000);
+          });
+      });
+    });
+    </script>
+    
+
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const timestamp = new Date().getTime();
+    
+        // 🔟 Static image paths (news1.jpg to news10.jpg)
+        const allImages = [
+          "/static/images/news-1.jpg",
+          "/static/images/news-2.jpg",
+          "/static/images/news-3.jpg",
+          "/static/images/news-4.jpg",
+          "/static/images/news-5.jpg",
+          "/static/images/news-6.jpg",
+          "/static/images/news-7.jpg",
+          "/static/images/news-8.jpg",
+          "/static/images/news-9.jpg",
+          "/static/images/news-10.jpg",
+          "/static/images/news-11.jpg",
+          "/static/images/news-12.jpg",
+          "/static/images/news-13.jpg",
+        ];
+    
+        // 🎲 Get 3 unique random images
+        function getRandomImages(count) {
+          const shuffled = allImages.sort(() => 0.5 - Math.random());
+          return shuffled.slice(0, count);
+        }
+    
+        const selectedImages = getRandomImages(3); // Pick 3 random images
+    
+        fetch(`/get_news_updates/?t=${timestamp}`)
+          .then((response) => response.json())
+          .then((data) => {
+            const container = document.getElementById("news-container");
+            container.innerHTML = "";
+            if (data.news && Array.isArray(data.news)) {
+              data.news.forEach((article, index) => {
+                const card = document.createElement("div");
+                card.className = "col-lg-4 col-md-6";
+                card.innerHTML = `
+                  <div class="card blog-card h-100">
+                    <img
+                      src="${selectedImages[index % selectedImages.length]}"
+                      class="card-img-top"
+                      alt="News Image"
+                    />
+                    <div class="card-body">
+                      <h5 class="card-title">${article.title}</h5>
+                      <p class="card-text">${article.description}</p>
+                      <a href="${article.url}" class="btn btn-primary">Read More</a>
+                    </div>
+                  </div>
+                `;
+                container.appendChild(card);
+              });
+            } else {
+              container.innerHTML =
+                "<p class='text-center text-danger'>Failed to load news.</p>";
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching news:", error);
+            document.getElementById("news-container").innerHTML =
+              "<p class='text-center text-danger'>Error loading news.</p>";
+          });
+      });
+    </script>
+    
+    
+    <script>
+      let currentImageIndex = 0;
+      const images = document.querySelectorAll('.hero-img');
+      const totalImages = images.length;
+    
+      function changeImage() {
+        images.forEach((img, index) => {
+          img.classList.remove('active'); // Hide all images
+          if (index === currentImageIndex) {
+            img.classList.add('active'); // Show the current image
+          }
+        });
+      }
+    
+      function nextImage() {
+        currentImageIndex = (currentImageIndex + 1) % totalImages; // Move to the next image
+        changeImage();
+      }
+    
+      function prevImage() {
+        currentImageIndex = (currentImageIndex - 1 + totalImages) % totalImages; // Move to the previous image
+        changeImage();
+      }
+    
+      // Automatically change images every 5 seconds
+      setInterval(nextImage, 5000);
+    
+      // Initialize the first image
+      changeImage();
+    </script>
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"></script>
+  </body>
+</html>

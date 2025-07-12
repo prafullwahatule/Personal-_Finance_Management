@@ -1,0 +1,173 @@
+/* ============================ */
+/*          PROFILE EDIT         */
+/* ============================ */
+
+/* Title Styling */
+.edit-profile-heading {
+    font-size: 28px;
+    font-weight: 700;
+    color: #00796B; /* Deep Teal */
+    margin-bottom: 24px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ============================ */
+/*       INSTRUCTIONS BOX       */
+/* ============================ */
+
+.edit-profile-instructions {
+    background-color: #E0F2F1; /* Soft Aqua */
+    padding: 16px 20px;
+    border-left: 6px solid #00897B; /* Emerald Green Accent */
+    border-radius: 10px;
+    color: #004D40; /* Deep Jungle Green */
+    font-size: 15px;
+    margin-bottom: 24px;
+    line-height: 1.6;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Custom Bullet Icons */
+.password-main-instructions li::before {
+    content: "✓";
+    color: #F57C00; /* Sunset Orange */
+    font-size: 15px;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    top: 2px;
+}
+
+/* Accuracy Confirmation Box */
+.accuracy-confirmation {
+    background-color: #E6F7E6; /* Light Green */
+    padding: 14px;
+    border-left: 5px solid #00897B; /* Strong Sea Green */
+    border-radius: 6px;
+    color: #004D40; /* Dark Green */
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    line-height: 1.6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft Glow */
+}
+
+/* ============================ */
+/*          FORM STYLING        */
+/* ============================ */
+.edit-profile-form {
+    background-color: #E0F2F1; /* Soft White */
+    padding: 24px 28px;
+    border-radius: 12px;
+    border: 1px solid #00897B;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12); /* Soft Shadow */
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Smooth Hover Effect */
+.edit-profile-form:hover {
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15); /* Softer & Enhanced Shadow */
+    transform: translateY(-2px); /* Slightly Higher Lift */
+}
+
+/* Label Styling */
+.edit-profile-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #006064; /* Dark Cyan */
+}
+
+/* Input Fields */
+.edit-profile-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #4DB6AC; /* Light Teal */
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: #E0F7FA; /* Aqua Mist */
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+/* Input Focus Effect */
+.edit-profile-input:focus {
+    border-color: #00796B; /* Deep Teal */
+    box-shadow: 0 0 10px rgba(0, 121, 107, 0.4); /* Teal Glow */
+    outline: none;
+}
+
+.input-error {
+    border: 2px solid red;
+    background-color: #ffe6e6;
+}
+
+
+
+/* ============================ */
+/*        SUBMIT BUTTON         */
+/* ============================ */
+
+.edit-profile-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 18px;
+    background-color: #00897B; /* Emerald Green */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 16px;
+}
+
+/* Disabled Button Style */
+.edit-profile-btn:disabled {
+    background-color: #80CBC4; /* Soft Greenish Teal */
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Hover Effect */
+.edit-profile-btn:hover:not(:disabled) {
+    background-color: #005D52; /* Dark Teal */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Focus Effect */
+.edit-profile-btn:focus {
+    outline: 3px solid #26A69A; /* Soft Glow */
+    outline-offset: 2px;
+}
+
+/* ============================ */
+/*       RESPONSIVE DESIGN      */
+/* ============================ */
+
+@media (max-width: 600px) {
+    .edit-profile-container {
+        padding: 15px;
+        margin: 15px;
+    }
+
+    .edit-profile-heading {
+        font-size: 24px;
+    }
+
+    .edit-profile-btn {
+        padding: 12px;
+    }
+
+    .edit-profile-instructions {
+        font-size: 14px;
+        padding: 12px;
+    }
+}

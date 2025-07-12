@@ -1,0 +1,228 @@
+/* Overall form container */
+.delete-account-container {
+  background-color: #1a2634;  /* Dark background */
+  border: 1px solid #66767e;         /* Outer border */
+  border-radius: 8px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  font-family: 'Segoe UI', sans-serif;
+  max-width: 100%;
+  width: auto;     /* Limit max width */
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+/* Form element styling */
+form {
+  max-width: 100%;
+  width: 100%;
+  margin: 20px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+}
+
+/* Form heading */
+.delete-account-container h3 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #bd2130;
+  margin-bottom: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  user-select: none;
+}
+
+/* Each form-group box */
+.form-group {
+  border: 1px solid #66767e;
+  border-radius: 8px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  background-color: #1c1f24;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+/* On focus inside inputs, highlight form-group */
+.form-group:focus-within {
+  border-color: #d9534f;
+  box-shadow: 0 0 8px #c9302c;
+}
+
+/* Labels styling */
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  color: #ffffff;
+}
+
+/* Input, select, textarea styling inside each box */
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  background-color: #1c1f24;
+  border: 1px solid #66767e;
+  color: #ffffff;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: inherit;
+  resize: vertical;
+}
+
+/* Input focus inside box */
+.form-group input[type="text"]:focus,
+.form-group input[type="password"]:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #d9534f;
+  box-shadow: 0 0 8px #c9302c;
+  outline: none;
+}
+
+/* Checkbox & radio labels spacing */
+.form-group div label {
+  display: inline-block;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+/* Helper text inside form-group */
+.form-group .field-info {
+  font-size: 0.85rem;
+  color: #bbb;
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
+/* Remove default list styles from helper text ul */
+.delete-account-container small.field-info ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 8px 0 0 0;
+}
+
+/* Style each helper text list item */
+.delete-account-container small.field-info ul li {
+  margin-bottom: 6px;
+  padding-left: 18px;  /* space for emoji */
+  position: relative;
+}
+
+/* Optional: align emoji or marker (if any) */
+.delete-account-container small.field-info ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 16px;
+  height: 16px;
+}
+
+/* Buttons container */
+.buttons-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  flex-wrap: wrap; /* wrap buttons on small screens */
+  margin-top: 10px;
+}
+
+/* Delete account button */
+.delete-account-button {
+  background-color: #d9534f; /* Bootstrap Danger Red */
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  text-align: center;
+  flex: 1 1 150px; /* flex-grow, shrink, basis for responsiveness */
+  min-width: 120px;
+  box-sizing: border-box;
+}
+
+.delete-account-button:hover {
+  background-color: #bd2130; /* Darker red on hover */
+}
+
+/* Change password button */
+.change-password-button {
+  background-color: #0275d8; /* Bootstrap Primary Blue */
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  flex: 1 1 150px;
+  min-width: 120px;
+  box-sizing: border-box;
+}
+
+.change-password-button:hover {
+  background-color: #025aa5; /* Darker blue on hover */
+}
+
+/* Responsive Media Queries */
+
+/* For small tablets and large phones */
+@media (max-width: 768px) {
+  .delete-account-container {
+    padding: 15px 15px;
+    max-width: 100%;
+  }
+
+  .form-group {
+    padding: 12px 15px;
+  }
+
+  .delete-account-button,
+  .change-password-button {
+    font-size: 14px;
+    padding: 8px 12px;
+    min-width: 100px;
+    flex: 1 1 45%;
+  }
+}
+
+/* For mobile phones */
+@media (max-width: 480px) {
+  .delete-account-container {
+    padding: 12px 12px;
+    margin: 15px 10px;
+  }
+
+  .form-group {
+    padding: 10px 12px;
+  }
+
+  .delete-account-button,
+  .change-password-button {
+    font-size: 14px;
+    padding: 10px;
+    flex: 1 1 100%;
+    min-width: unset;
+  }
+
+  /* Stack buttons vertically on mobile */
+  .buttons-container {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
